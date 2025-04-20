@@ -11,6 +11,13 @@ def create_amenity(name):
         db.session.rollback()
         return None
 
+def get_or_create_amenity(name):
+    """Get an existing amenity by name or create a new one if it doesn't exist"""
+    amenity = Amenity.query.filter_by(name=name).first()
+    if amenity:
+        return amenity
+    return create_amenity(name)
+
 def get_amenity(id):
     return Amenity.query.get(id)
 
