@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="../static/Css/signup.css" />
+  <script defer src="../static/Javascript/signup.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  
+  <div class="background-image"></div>
+
+  
+  <header class="pulse">
+    <div class="nav-container">
+      <div class="logo">
+        <img src="../../images/Logo.png" alt="Logo" />
+        <span class="logo-text">Apartment Reviews</span>
+      </div>
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#">Home</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+        <div class="burger" id="burger">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  
+  <div class="signup-container">
+    <div class="signup-card">
+      <h2>Sign Up</h2>
+      <form>
+        <input type="text" placeholder="Username" required />
+        
+        <div class="double-input">
+          <input type="text" placeholder="First Name" required />
+          <input type="text" placeholder="Last Name" required />
+        </div>
+
+        <input type="email" placeholder="Email" required />
+        <input type="tel" placeholder="Phone Number" required />
+
+        <div class="double-input">
+          <input type="password" placeholder="Password" required />
+          <input type="password" placeholder="Confirm Password" required />
+        </div>
+
+        <select required>
+          <option value="" disabled selected>User Type</option>
+          <option value="Tenant">Tenant</option>
+          <option value="Landlord">Landlord</option>
+        </select>
+
+        <p class="login-link">Already have an account? <a href="login.html">Login</a></p>
+
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  
+  <footer class="pulse">
+    &copy; 2025 Apartment Reviews System. All Rights Reserved.
+  </footer>
+</body>
+</html>
