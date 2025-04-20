@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Create Apartment Listing</title>
-  <link rel="stylesheet" href="../../static/Css/landLordNav.css">
-  <link rel="stylesheet" href="../../static/Css/footer.css">
-  <link rel="stylesheet" href="../../static/Css/ApartmentCreation.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/landLordNav.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ApartmentCreation.css') }}">
 
   <!-- Select2 Dropdown CSS -->
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -18,16 +18,16 @@
   <nav class="navbar">
     <div class="navbar-container">
       <div class="logo">
-        <a href="#">
-          <img src="../../static/images/logo.png" alt="Logo" class="logo-img">
+        <a href="{{ url_for('index_views.index_page') }}">
+          <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
           <span class="logo-text">AptReview</span>
         </a>
       </div>
       <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">View Listings</a></li>
-        <li><a href="#">Create Listing</a></li>
-        <li><a href="#">Sign Out</a></li>
+        <li><a href="{{ url_for('index_views.index_page') }}">Home</a></li>
+        <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
+        <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
+        <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
       </ul>
     </div>
   </nav>
@@ -36,70 +36,121 @@
   <main>
     <h2>Create Apartment Listing</h2>
     <div class="form-container">
-      <form>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for message in messages %}
+              <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      <form action="{{ url_for('apartment_views.create_apartment_action') }}" method="POST" enctype="multipart/form-data">
         <div class="form-row">
           <div class="form-group">
             <label>Apartment Title</label>
-            <input type="text" placeholder="e.g. Cozy 2BR in Westside">
+            <input type="text" name="title" placeholder="e.g. Cozy 2BR in Westside" required>
           </div>
           <div class="form-group">
             <label>Price (Monthly)</label>
-            <input type="number" placeholder="e.g. 1500">
+            <input type="number" name="price" placeholder="e.g. 1500" required>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>Bedrooms</label>
-            <input type="number" placeholder="e.g. 2">
+            <input type="number" name="bedrooms" placeholder="e.g. 2" required>
           </div>
           <div class="form-group">
             <label>Bathrooms</label>
-            <input type="number" placeholder="e.g. 1.5">
+            <input type="number" name="bathrooms" placeholder="e.g. 1.5" required>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>Size (sqft)</label>
-            <input type="number" placeholder="e.g. 1200">
+            <label>Address</label>
+            <input type="text" name="address" placeholder="e.g. 123 Main St" required>
           </div>
           <div class="form-group">
-            <label>Location</label>
-            <select class="location-select">
-              <option disabled selected>Select Location</option>
-              <option>Port of Spain</option>
-              <option>San Fernando</option>
-              <option>Arima</option>
-              <option>Chaguanas</option>
-              <option>St. Augustine</option>
-            </select>
+            <label>City</label>
+            <input type="text" name="city" placeholder="e.g. Port of Spain" required>
+          </div>
+        </div>
+
+        <div class="form-row full-width">
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" rows="4" placeholder="Describe your apartment"></textarea>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>Amenities</label>
-            <select class="amenities-select" multiple>
-              <option>WiFi</option>
-              <option>Parking</option>
-              <option>Laundry</option>
-              <option>Air Conditioning</option>
-              <option>Pool</option>
-              <option>Security</option>
-            </select>
-          </div>
-          <div class="form-row full-width">
-            <div class="form-group">
-              <label>Verified Tenants (Phone Numbers)</label>
-              <textarea rows="4" placeholder="e.g. 8681234567, 8689876543"></textarea>
-              <small>Enter phone numbers of past tenants. Separate by commas or line breaks.</small>
+            <div class="amenities-container">
+              <div class="amenity-item">
+                <input type="checkbox" id="wifi" name="amenities" value="WiFi">
+                <label for="wifi">WiFi</label>
+              </div>
+              <div class="amenity-item">
+                <input type="checkbox" id="ac" name="amenities" value="Air Conditioning">
+                <label for="ac">Air Conditioning</label>
+              </div>
+              <div class="amenity-item">
+                <input type="checkbox" id="parking" name="amenities" value="Parking">
+                <label for="parking">Parking</label>
+              </div>
+              <div class="amenity-item">
+                <input type="checkbox" id="laundry" name="amenities" value="Laundry">
+                <label for="laundry">Laundry</label>
+              </div>
+              <div class="amenity-item">
+                <input type="checkbox" id="pool" name="amenities" value="Pool">
+                <label for="pool">Pool</label>
+              </div>
+              <div class="amenity-item">
+                <input type="checkbox" id="gym" name="amenities" value="Gym">
+                <label for="gym">Gym</label>
+              </div>
+              <div class="amenity-item">
+                <input type="checkbox" id="security" name="amenities" value="Security">
+                <label for="security">Security</label>
+              </div>
+              <div class="amenity-item">
+                <input type="checkbox" id="furnished" name="amenities" value="Furnished">
+                <label for="furnished">Furnished</label>
+              </div>
             </div>
           </div>
+        </div>
+
+        <div class="form-row">
           <div class="form-group">
-            <label>Upload Image</label>
-            <input type="file" accept="image/*">
-            <small>Recommended: 1200x800px</small>
+            <label>Cover Photo (Main Image)</label>
+            <div class="file-upload-container">
+              <input type="file" name="cover_image" accept="image/*" class="file-upload" required>
+              <div class="file-upload-info">
+                <p>This will be the main image shown on the listings page</p>
+                <p>Recommended size: 1200 x 800 pixels</p>
+              </div>
+              <div id="cover-image-preview" class="image-preview"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Additional Images (Optional)</label>
+            <div class="file-upload-container">
+              <input type="file" name="additional_images" multiple accept="image/*" class="file-upload">
+              <div class="file-upload-info">
+                <p>Upload up to 4 additional images (JPG, PNG)</p>
+                <p>These will be visible in the detailed view</p>
+              </div>
+              <div id="additional-images-preview" class="images-preview-container"></div>
+            </div>
           </div>
         </div>
 
@@ -115,13 +166,8 @@
     <p>&copy; 2025 AptReview. All rights reserved.</p>
   </footer>
 
-  <!-- Select2 Activation Script -->
-  <script>
-    $(document).ready(function() {
-      $('.location-select').select2({ placeholder: "Select location", width: "100%" });
-      $('.amenities-select').select2({ placeholder: "Select amenities", width: "100%" });
-    });
-  </script>
+  <!-- JavaScript file -->
+  <script src="{{ url_for('static', filename='Javascript/ApartmentCreation.js') }}"></script>
 
 </body>
 </html>

@@ -91,7 +91,7 @@ def login_action():
         return redirect(url_for('auth_views.login_page'))
     else:
         flash('Login Successful')
-        response = redirect(url_for('index_views.index_page'))
+        response = redirect(url_for('apartment_views.apartments_listing'))
         set_access_cookies(response, token) 
         return response
 

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ apartment.title }} - Details</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ListingDetails.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/landLordNav.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <!-- Leaflet CSS and JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- JavaScript -->
+  <script src="{{ url_for('static', filename='Javascript/ListingDetails.js') }}" defer></script>
+</head>
+<body>
+  
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="logo">
+        <a href="{{ url_for('index_views.index_page') }}">
+          <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
+          <span class="logo-text">AptReview</span>
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index_views.index_page') }}">Home</a></li>
+        <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
+        {% if not is_tenant %}
+        <!-- Landlord-specific options -->
+        <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
+        <li><a href="#">My Properties</a></li>
+        {% else %}
+        <!-- Tenant-specific options -->
+        <li><a href="#">My Reviews</a></li>
+        <li><a href="#">Saved Apartments</a></li>
+        {% endif %}
+        <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <main class="content">
+
+      <div class="back-button-container">
+        <a href="{{ url_for('apartment_views.apartments_listing') }}" class="back-button">
+          <i class="fas fa-arrow-left"></i> Back to Listings
+        </a>
+      </div>
+
+      <!-- Listing Images Card -->
+      <div class="card">
+        <h2>{{ apartment.title }}</h2>
+        <div class="image-gallery">
+          <div class="main-image">
+            {% if cover_image %}
+              <img src="{{ url_for('static', filename='images/apartments/' + apartment.id|string + '/' + cover_image) }}" alt="{{ apartment.title }}" id="featured-image">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/apartment1.jpg') }}" alt="{{ apartment.title }}" id="featured-image">
+            {% endif %}
+          </div>
+          
+          <div class="image-thumbnails">
+            {% if cover_image %}
+              <div class="thumbnail active">
+                <img src="{{ url_for('static', filename='images/apartments/' + apartment.id|string + '/' + cover_image) }}" 
+                    alt="Cover image"
+                    onclick="changeImage(this.src)">
+              </div>
+            {% endif %}
+            
+            {% for image in additional_images %}
+              <div class="thumbnail">
+                <img src="{{ url_for('static', filename='images/apartments/' + apartment.id|string + '/' + image) }}" 
+                    alt="Additional image"
+                    onclick="changeImage(this.src)">
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Apartment Details Card -->
+      <div class="card">
+        <div class="apartment-info-detailed">
+          <div class="info-row">
+            <div class="info-section">
+              <h3>Price</h3>
+              <p class="price">${{ apartment.price }}/month</p>
+            </div>
+            
+            <div class="info-section">
+              <h3>Details</h3>
+              <p><strong>Bedrooms:</strong> {{ apartment.bedrooms }}</p>
+              <p><strong>Bathrooms:</strong> {{ apartment.bathrooms }}</p>
+            </div>
+
+            <!-- Landlord Information -->
+            <div class="info-section">
+              <h3>Landlord</h3>
+              {% if landlord %}
+                <p><strong>Name:</strong> {{ landlord.first_name }} {{ landlord.last_name }}</p>
+                {% if is_tenant %}
+                <p><strong>Contact:</strong> {{ landlord.email }}</p>
+                {% endif %}
+              {% else %}
+                <p>Landlord information not available</p>
+              {% endif %}
+            </div>
+          </div>
+          
+          <div class="info-section">
+            <h3>Description</h3>
+            <p>{{ apartment.description }}</p>
+          </div>
+          
+          {% if apartment.amenities %}
+          <div class="info-section">
+            <h3>Amenities</h3>
+            <div class="amenities-list">
+              {% for amenity in apartment.amenities %}
+                <span class="amenity-tag">{{ amenity.name }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          
+          <div class="location-section">
+            <h3>Location</h3>
+            <p>{{ apartment.address }}, {{ apartment.city }}</p>
+            <div id="map" class="map-container" data-address="{{ apartment.address }}, {{ apartment.city }}"></div>
+          </div>
+          
+          {% if is_tenant %}
+          <div class="action-section">
+            <button class="review-btn">Leave a Review</button>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Reviews Card -->
+      <div class="card">
+        <h2><i class="fas fa-comments"></i> Reviews</h2>
+        <div class="review-search">
+          <input type="text" placeholder="Search review content..." />
+          <i class="fas fa-search"></i>
+        </div>
+
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2025 Apartment Reviews. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html> 

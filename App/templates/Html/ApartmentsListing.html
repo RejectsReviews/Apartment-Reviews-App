@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Apartment Listings</title>
-  <link rel="stylesheet" href="../../static/Css/landLordNav.css">
-  <link rel="stylesheet" href="../../static/Css/ApartmentsListing.css">
-  <link rel="stylesheet" href="../../static/Css/footer.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/landLordNav.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ApartmentsListing.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
 </head>
 <body>
 
@@ -13,16 +13,24 @@
   <nav class="navbar">
     <div class="navbar-container">
       <div class="logo">
-        <a href="#">
-          <img src="../../static/images/logo.png" alt="Logo" class="logo-img">
+        <a href="{{ url_for('index_views.index_page') }}">
+          <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
           <span class="logo-text">AptReview</span>
         </a>
       </div>
       <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">View Listings</a></li>
-        <li><a href="../Html/ApartmentCreation.html">Create Listing</a></li>
-        <li><a href="#">Sign Out</a></li>
+        <li><a href="{{ url_for('index_views.index_page') }}">Home</a></li>
+        <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
+        {% if not is_tenant %}
+        <!-- Landlord-specific options -->
+        <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
+        <li><a href="#">My Properties</a></li>
+        {% else %}
+        <!-- Tenant-specific options -->
+        <li><a href="#">My Reviews</a></li>
+        <li><a href="#">Saved Apartments</a></li>
+        {% endif %}
+        <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
       </ul>
     </div>
   </nav>
@@ -35,35 +43,50 @@
 
   <!-- Main Listings Content -->
   <main class="apartments-grid">
-    <div class="apartment-card">
-      <img src="../../static/images/apartment1.jpg" alt="Apartment 1" class="apartment-image">
-      <div class="apartment-info">
-        <h2>Luxury Downtown Apartment</h2>
-        <p class="price">$1,500/month</p>
-        <p class="details">2 Bed • 2 Bath • 1,200 sqft</p>
-        <p class="location">123 Main Street, Cityville</p>
-        <button class="view-details">View Details</button>
-      </div>
-    </div>
-
-    <div class="apartment-card">
-        <img src="../../static/images/apartment1.jpg" alt="Apartment 1" class="apartment-image">
-        <div class="apartment-info">
-          <h2>Downtown Apartment</h2>
-          <p class="price">$1,000/month</p>
-          <p class="details">3 Bed • 1 Bath • 1,000 sqft</p>
-          <p class="location">124 Main Street, Cityville</p>
-          <button class="view-details">View Details</button>
+    {% if apartments %}
+      {% for apartment in apartments %}
+      <div class="apartment-card">
+        <div class="image-slideshow">
+          <!-- Check if apartment has a cover image -->
+          {% set cover_image = get_apartment_images(apartment.id, 'cover') %}
+          {% if cover_image %}
+            <img src="{{ url_for('static', filename='images/apartments/' + apartment.id|string + '/' + cover_image) }}" alt="{{ apartment.title }}" class="apartment-image">
+          {% else %}
+            <img src="{{ url_for('static', filename='images/apartment1.jpg') }}" alt="{{ apartment.title }}" class="apartment-image">
+          {% endif %}
         </div>
-    </div>
-
-    <!-- Add more .apartment-card elements as needed -->
+        <div class="apartment-info">
+          <h2>{{ apartment.title }}</h2>
+          <p class="price">${{ apartment.price }}/month</p>
+          <p class="details">{{ apartment.bedrooms }} Bed • {{ apartment.bathrooms }} Bath</p>
+          <p class="location">{{ apartment.address }}, {{ apartment.city }}</p>
+          {% if apartment.amenities %}
+          <div class="amenities-list">
+            {% for amenity in apartment.amenities[:3] %}
+              <span class="amenity-tag">{{ amenity.name }}</span>
+            {% endfor %}
+            {% if apartment.amenities|length > 3 %}
+              <span class="amenity-more">+{{ apartment.amenities|length - 3 }} more</span>
+            {% endif %}
+          </div>
+          {% endif %}
+          <a href="{{ url_for('apartment_views.apartment_details', apartment_id=apartment.id) }}" class="view-details">View Details</a>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="no-apartments">
+        <p>No apartments available at this time.</p>
+      </div>
+    {% endif %}
   </main>
 
   <!-- Footer -->
   <footer class="footer">
-    <p>&copy; 2025 Rejects. All rights reserved.</p>
+    <p>&copy; 2025 Apartment Reviews. All rights reserved.</p>
   </footer>
 
+  <!-- Include the slideshow.js script -->
+  <script src="{{ url_for('static', filename='js/slideshow.js') }}"></script>
 </body>
 </html>
