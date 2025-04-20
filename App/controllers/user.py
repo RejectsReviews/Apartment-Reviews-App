@@ -1,11 +1,40 @@
-from App.models import User
+from App.models import User, Tenant, Landlord
 from App.database import db
 
-def create_user(username, password, email):
-    newuser = User(username=username, password=password, email=email)
+def create_user(username, password, email, first_name, last_name, user_type):
+    newuser = User(username=username, password=password, email=email, 
+                  first_name=first_name, last_name=last_name, user_type=user_type)
     db.session.add(newuser)
     db.session.commit()
     return newuser
+
+def signup_tenant(username, password, email, first_name, last_name, phone, address, city, state):
+    tenant = Tenant(
+        username=username, 
+        password=password, 
+        email=email, 
+        first_name=first_name, 
+        last_name=last_name, 
+        phone=phone,
+        address=address,
+        city=city,
+        state=state
+    )
+    db.session.add(tenant)
+    db.session.commit()
+    return tenant
+
+def signup_landlord(username, password, email, first_name, last_name):
+    landlord = Landlord(
+        username=username, 
+        password=password, 
+        email=email, 
+        first_name=first_name, 
+        last_name=last_name
+    )
+    db.session.add(landlord)
+    db.session.commit()
+    return landlord
 
 def get_user_by_username(username):
     return User.query.filter_by(username=username).first()

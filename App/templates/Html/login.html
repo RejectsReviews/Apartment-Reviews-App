@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
-  <link rel="stylesheet" href="../static/Css/login.css" />
-  <script defer src="../static/Javascript/login.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+  <script defer src="{{ url_for('static', filename='Javascript/login.js') }}"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
@@ -16,13 +16,13 @@
   <header class="pulse">
     <div class="nav-container">
       <div class="logo">
-        <img src="../../images/Logo.png" alt="Logo" />
+        <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" />
         <span class="logo-text">Apartment Reviews</span>
       </div>
       <nav>
         <ul class="nav-links" id="navLinks">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Sign up</a></li>
+          <li><a href="{{ url_for('index_views.index_page') }}">Home</a></li>
+          <li><a href="{{ url_for('auth_views.signup_page') }}">Sign up</a></li>
         </ul>
         <div class="burger" id="burger">
           <div class="line"></div>
@@ -37,18 +37,27 @@
   <div class="login-container">
     <div class="login-card">
       <h2>Login</h2>
-      <form>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for message in messages %}
+              <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      <form action="{{ url_for('auth_views.login_action') }}" method="POST">
         <div class="input-group">
-          <input type="text" placeholder="Username" required />
+          <input type="text" name="username" placeholder="Username" required />
           <span class="icon">👤</span>
         </div>
         <div class="input-group">
-          <input type="password" placeholder="Password" required />
+          <input type="password" name="password" placeholder="Password" required />
           <span class="icon">🔒</span>
         </div>
         <button type="submit">Login</button>
         <p class="signup-text">
-          Don’t have an account? <a href="#">Sign Up</a>
+          Don't have an account? <a href="{{ url_for('auth_views.signup_page') }}">Sign Up</a>
         </p>
       </form>
     </div>

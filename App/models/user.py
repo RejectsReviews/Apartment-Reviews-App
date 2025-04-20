@@ -8,18 +8,32 @@ class User(db.Model):
     first_name = db.Column(db.String(120), nullable=False)
     last_name = db.Column(db.String(120), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
+    user_type = db.Column(db.String(20), nullable=False)  
     created_at = db.Column(db.DateTime, default=db.func.now())
     
+    type = db.Column(db.String(50))
+    
+    __mapper_args__ = {
+        'polymorphic_identity': 'user',
+        'polymorphic_on': type
+    }
 
-    def __init__(self, username, password, email):
+    def __init__(self, username, password, email, first_name, last_name, user_type):
         self.username = username
         self.set_password(password)
         self.email = email
+        self.first_name = first_name
+        self.last_name = last_name
+        self.user_type = user_type
 
     def get_json(self):
         return{
             'id': self.id,
-            'username': self.username
+            'username': self.username,
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'user_type': self.user_type
         }
 
     def set_password(self, password):

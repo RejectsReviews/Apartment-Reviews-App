@@ -21,7 +21,7 @@ html {
 }
 
 .background-image {
-  background: url('../../../images/background.jpg') no-repeat center center/cover;
+  background-image: url("../images/background.jpg");
   position: fixed;
   height: 100%;
   width: 100%;
