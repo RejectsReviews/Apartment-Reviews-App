@@ -1,0 +1,217 @@
+:root {
+  --penn-red: #9e050d;
+  --white: #ffffff;
+  --yinmn-blue: #445e93;
+  --carolina-blue: #7eb2dd;
+  --light-coral: #fa898d;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Background */
+.background-image {
+  background: url('../../../images/background.jpg') no-repeat center center/cover;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  filter: brightness(0.7);
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(250, 137, 141, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(250, 137, 141, 1);
+  }
+}
+
+.pulse {
+  animation: pulse 2.5s infinite;
+}
+
+/* Header/Navbar */
+header {
+  background-color: var(--light-coral);
+  padding: 14px 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  height: 45px;
+  width: 45px;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: transform 0.3s ease;
+}
+
+.nav-links a:hover {
+  transform: scale(1.1);
+  text-decoration: underline;
+}
+
+/* Burger */
+.burger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.burger .line {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 3px 0;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 30px;
+    background: var(--light-coral);
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .burger {
+    display: flex;
+  }
+}
+
+/* Login Container */
+.login-container {
+  height: calc(100vh - 140px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 340px;
+  text-align: center;
+}
+
+.login-card h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--penn-red);
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 38px 12px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.input-group .icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #888;
+}
+
+button {
+  background-color: var(--carolina-blue);
+  color: white;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--yinmn-blue);
+}
+
+.signup-text {
+  margin-top: 15px;
+  font-size: 0.85rem;
+}
+
+.signup-text a {
+  color: var(--light-coral);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Footer */
+footer {
+  background-color: var(--light-coral);
+  color: white;
+  text-align: center;
+  padding: 12px;
+  font-size: 0.9rem;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 2;
+}
