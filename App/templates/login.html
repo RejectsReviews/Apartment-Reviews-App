@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="../static/Css/login.css" />
+  <script defer src="../static/Javascript/login.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Background -->
+  <div class="background-image"></div>
+
+  <!-- Animated NavBar -->
+  <header class="pulse">
+    <div class="nav-container">
+      <div class="logo">
+        <img src="../../images/Logo.png" alt="Logo" />
+        <span class="logo-text">Apartment Reviews</span>
+      </div>
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Sign up</a></li>
+        </ul>
+        <div class="burger" id="burger">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Login Form -->
+  <div class="login-container">
+    <div class="login-card">
+      <h2>Login</h2>
+      <form>
+        <div class="input-group">
+          <input type="text" placeholder="Username" required />
+          <span class="icon">👤</span>
+        </div>
+        <div class="input-group">
+          <input type="password" placeholder="Password" required />
+          <span class="icon">🔒</span>
+        </div>
+        <button type="submit">Login</button>
+        <p class="signup-text">
+          Don’t have an account? <a href="#">Sign Up</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="pulse">
+    &copy; 2025 Apartment Reviews System. All Rights Reserved.
+  </footer>
+</body>
+</html>
