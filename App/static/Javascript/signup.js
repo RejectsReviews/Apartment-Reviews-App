@@ -6,4 +6,19 @@ document.addEventListener("DOMContentLoaded", () => {
       navLinks.classList.toggle("active");
     });
   });
+
+  function toggleTenantFields() {
+    const userType = document.getElementById('user_type').value;
+    const tenantFields = document.getElementById('tenant-fields');
+    
+    if (userType === 'Tenant') {
+      tenantFields.style.display = 'block';
+      const inputs = tenantFields.querySelectorAll('input');
+      inputs.forEach(input => input.required = true);
+    } else {
+      tenantFields.style.display = 'none';
+      const inputs = tenantFields.querySelectorAll('input');
+      inputs.forEach(input => input.required = false);
+    }
+  }
   
