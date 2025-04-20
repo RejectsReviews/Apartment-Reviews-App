@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 :root {
   --penn-red: #9e050d;
   --white: #ffffff;
@@ -17,7 +19,6 @@ html {
   height: 100%;
   font-family: 'Poppins', sans-serif;
 }
-
 
 .background-image {
   background: url('../../../images/background.jpg') no-repeat center center/cover;
@@ -92,7 +93,6 @@ header {
   text-decoration: underline;
 }
 
-
 .burger {
   display: none;
   flex-direction: column;
@@ -128,7 +128,7 @@ header {
 }
 
 
-.login-container {
+.signup-container {
   height: calc(100vh - 140px);
   display: flex;
   justify-content: center;
@@ -137,46 +137,58 @@ header {
   z-index: 1;
 }
 
-.login-card {
+.signup-card {
   background: rgba(255, 255, 255, 0.95);
   padding: 30px 40px;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  width: 340px;
+  width: 400px;
   text-align: center;
 }
 
-.login-card h2 {
+.signup-card h2 {
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: 700;
   color: var(--penn-red);
 }
 
-.input-group {
-  position: relative;
-  margin-bottom: 20px;
+.signup-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.input-group input {
-  width: 100%;
-  padding: 12px 38px 12px 12px;
+.signup-card input,
+.signup-card select {
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 0.95rem;
+  width: 100%;
 }
 
-.input-group .icon {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: #888;
+.double-input {
+  display: flex;
+  gap: 10px;
+}
+
+.double-input input {
+  flex: 1;
+}
+
+.login-link {
+  font-size: 0.9rem;
+}
+
+.login-link a {
+  color: red;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 button {
-  background-color: var(--carolina-blue);
+  background-color: var(--yinmn-blue);
   color: white;
   padding: 12px;
   width: 100%;
@@ -189,21 +201,10 @@ button {
 }
 
 button:hover {
-  background-color: var(--yinmn-blue);
+  background-color: var(--carolina-blue);
 }
 
-.signup-text {
-  margin-top: 15px;
-  font-size: 0.85rem;
-}
-
-.signup-text a {
-  color: var(--light-coral);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-
+/* Footer */
 footer {
   background-color: var(--light-coral);
   color: white;
