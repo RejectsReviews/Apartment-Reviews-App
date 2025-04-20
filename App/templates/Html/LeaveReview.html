@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Write a Review</title>
+  <link rel="stylesheet" href="../../static/Css/LeaveReview.css"/>
+  <script defer src="../../static/Javascript/LeaveReview.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo-left">
+      <img src="../../static/images/Logo.png" alt="Logo" class="logo"/>
+      <span class="brand">Apartment Reviews</span>
+    </div>
+    <nav class="nav-links">
+      <a href="tenantsProfile.html">Profile</a>
+      <a href="ViewListing.html">View Listings</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h1>Write a Review</h1>
+      <p class="subtitle"> [Listing Name Placeholder]</p>
+      <p class="address">[Address Placeholder]</p>
+
+      <label class="section-title">Upload Photos or Video (Optional)</label>
+      <p class="description">Images or short Video</p>
+      <div class="media-upload">
+        <label for="mediaInput" class="media-box">Click to Add media</label>
+        <input type="file" id="mediaInput" accept="image/*,video/*" multiple style="display: none;">
+      </div> 
+
+      <label for="kudos">Give Rating out of 5 Stars</label>
+      <input type="text" id="kudos" placeholder="Put Clickable stars here"/>
+
+      <label class="section-title">Describe your experience</label>
+
+      <label for="reviewTitle">Add a Title</label>
+      <input type="text" id="reviewTitle" placeholder="Sum up your review in one line" maxlength="72"/>
+
+      <label for="kudos">Give Kudos (Optional)</label>
+      <input type="text" id="kudos" placeholder="Search staff name or title"/>
+
+      <label for="fullReview">Review</label>
+      <textarea id="fullReview" placeholder="Tell people about your experience: amenities, neighborhood, staff..." minlength="200"></textarea>
+
+      <button class="submit-btn">Submit Review</button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Apartment Reviews System. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>
