@@ -1,86 +1,93 @@
+:root {
+  --penn-red: #9e050d;
+  --white: #ffffff;
+  --yinmn-blue: #445e93;
+  --carolina-blue: #7eb2dd;
+  --light-coral: #fa898d;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #fff;
-    color: #445E93;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .listings-wrapper {
-    max-width: 1000px;
-    margin: 50px auto;
-    padding: 0 20px;
-  }
-  
-  .page-title {
-    text-align: center;
-    color: #9E050D;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-  }
-  
-  .apartment-list {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-  }
-  
-  .apartment-item {
-    display: flex;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    overflow: hidden;
-  }
-  
-  .apartment-thumb {
-    width: 250px;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .apartment-details {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .apartment-details h3 {
-    margin-top: 0;
-    color: #445E93;
-  }
-  
-  .listing-actions {
-    margin-top: 20px;
-  }
-  
-  .edit-btn, .delete-btn {
-    padding: 10px 20px;
-    margin-right: 10px;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .edit-btn {
-    background-color: #7EB2DD;
-    color: white;
-  }
-  
-  .edit-btn:hover {
-    background-color: #445E93;
-  }
-  
-  .delete-btn {
-    background-color: #FA898D;
-    color: white;
-  }
-  
-  .delete-btn:hover {
-    background-color: #9E050D;
-  }
-  
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--white);
+  color: var(--yinmn-blue);
+}
+
+.listings-wrapper {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--penn-red);
+  margin-bottom: 2rem;
+}
+
+.apartment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.apartment-item {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.apartment-details h3 {
+  font-size: 1.5rem;
+  color: var(--yinmn-blue);
+}
+
+.apartment-details p {
+  font-size: 1rem;
+  margin: 4px 0;
+}
+
+.listing-actions {
+  margin-top: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-right: 10px;
+}
+
+.edit-btn {
+  background-color: var(--carolina-blue);
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: var(--yinmn-blue);
+}
+
+.delete-btn {
+  background-color: var(--light-coral);
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: var(--penn-red);
+}
