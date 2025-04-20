@@ -1,0 +1,117 @@
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background: #ffffff;
+    color: #445E93;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* Title */
+  main h2 {
+    text-align: center;
+    color: #9E050D;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, rgba(250,137,141,0.2), rgba(250,137,141,0.4));
+    border-radius: 8px;
+    border: 2px solid rgba(250,137,141,0.3);
+    box-shadow: 0 0 10px rgba(250,137,141,0.3);
+    backdrop-filter: blur(4px);
+  }
+  
+  /* Container */
+  .form-container {
+    background: rgba(255,255,255,0.95);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    max-width: 900px;
+    width: 100%;
+    margin: 2rem auto;
+  }
+  
+  /* Form layout */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .form-row .form-group {
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  /* Labels and Inputs */
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #445E93;
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 6px;
+    border: 2px solid #ccc;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+  }
+  
+  input:focus, select:focus, textarea:focus {
+    border-color: #FA898D;
+    outline: none;
+  }
+  
+  select[multiple] {
+    height: auto;
+    min-height: 100px;
+  }
+  
+  /* Submit Button */
+  button {
+    background: #FA898D;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.9rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  button:hover {
+    background: #9E050D;
+  }
+
+  textarea {
+    resize: vertical;
+    border: 2px solid #ccc;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  textarea:focus {
+    border-color: #FA898D;
+    outline: none;
+  }
+  
