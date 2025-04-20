@@ -1,0 +1,86 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fff;
+    color: #445E93;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .listings-wrapper {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 0 20px;
+  }
+  
+  .page-title {
+    text-align: center;
+    color: #9E050D;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+  }
+  
+  .apartment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .apartment-item {
+    display: flex;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+  
+  .apartment-thumb {
+    width: 250px;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .apartment-details {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .apartment-details h3 {
+    margin-top: 0;
+    color: #445E93;
+  }
+  
+  .listing-actions {
+    margin-top: 20px;
+  }
+  
+  .edit-btn, .delete-btn {
+    padding: 10px 20px;
+    margin-right: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .edit-btn {
+    background-color: #7EB2DD;
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background-color: #445E93;
+  }
+  
+  .delete-btn {
+    background-color: #FA898D;
+    color: white;
+  }
+  
+  .delete-btn:hover {
+    background-color: #9E050D;
+  }
+  

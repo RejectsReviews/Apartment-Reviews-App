@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Apartment Listing</title>
+  <link rel="stylesheet" href="../../static/Css/landLordNav.css">
+  <link rel="stylesheet" href="../../static/Css/footer.css">
+  <link rel="stylesheet" href="../../static/Css/ApartmentCreation.css">
+
+  <!-- Select2 Dropdown CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="logo">
+        <a href="#">
+          <img src="../../static/images/logo.png" alt="Logo" class="logo-img">
+          <span class="logo-text">AptReview</span>
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">View Listings</a></li>
+        <li><a href="#">Create Listing</a></li>
+        <li><a href="#">Sign Out</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <h2>Create Apartment Listing</h2>
+    <div class="form-container">
+      <form>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Apartment Title</label>
+            <input type="text" placeholder="e.g. Cozy 2BR in Westside">
+          </div>
+          <div class="form-group">
+            <label>Price (Monthly)</label>
+            <input type="number" placeholder="e.g. 1500">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Bedrooms</label>
+            <input type="number" placeholder="e.g. 2">
+          </div>
+          <div class="form-group">
+            <label>Bathrooms</label>
+            <input type="number" placeholder="e.g. 1.5">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Size (sqft)</label>
+            <input type="number" placeholder="e.g. 1200">
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <select class="location-select">
+              <option disabled selected>Select Location</option>
+              <option>Port of Spain</option>
+              <option>San Fernando</option>
+              <option>Arima</option>
+              <option>Chaguanas</option>
+              <option>St. Augustine</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Amenities</label>
+            <select class="amenities-select" multiple>
+              <option>WiFi</option>
+              <option>Parking</option>
+              <option>Laundry</option>
+              <option>Air Conditioning</option>
+              <option>Pool</option>
+              <option>Security</option>
+            </select>
+          </div>
+          <div class="form-row full-width">
+            <div class="form-group">
+              <label>Verified Tenants (Phone Numbers)</label>
+              <textarea rows="4" placeholder="e.g. 8681234567, 8689876543"></textarea>
+              <small>Enter phone numbers of past tenants. Separate by commas or line breaks.</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Upload Image</label>
+            <input type="file" accept="image/*">
+            <small>Recommended: 1200x800px</small>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <button type="submit">Create Listing</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 AptReview. All rights reserved.</p>
+  </footer>
+
+  <!-- Select2 Activation Script -->
+  <script>
+    $(document).ready(function() {
+      $('.location-select').select2({ placeholder: "Select location", width: "100%" });
+      $('.amenities-select').select2({ placeholder: "Select amenities", width: "100%" });
+    });
+  </script>
+
+</body>
+</html>

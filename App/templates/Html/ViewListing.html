@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Apartment Listings</title>
+  <link rel="stylesheet" href="../../static/Css/landLordNav.css">
+  <link rel="stylesheet" href="../../static/Css/ViewListing.css">
+  <link rel="stylesheet" href="../../static/Css/footer.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="logo">
+        <a href="#">
+          <img src="../../static/images/logo.png" alt="Logo" class="logo-img">
+          <span class="logo-text">AptReview</span>
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">View Listings</a></li>
+        <li><a href="../Html/ApartmentCreation.html">Create Listing</a></li>
+        <li><a href="#">Sign Out</a></li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <!-- Main Listings Content -->
+  <main class="listings-wrapper">
+    <h2 class="page-title">My Apartment Listings</h2>
+  
+    <section class="apartment-list">
+      <!-- Apartment Listing Card -->
+      <div class="apartment-item">
+        <img src="../../static/images/apartment1.jpg" alt="Apartment" class="apartment-thumb">
+        <div class="apartment-details">
+          <h3>Modern Studio Apartment</h3>
+          <p><strong>Location:</strong> St. Augustine</p>
+          <p><strong>Price:</strong> $1,200/month</p>
+          <div class="listing-actions">
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Repeat more apartment-item divs here dynamically -->
+    </section>
+  </main>
+  
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 Rejects. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
