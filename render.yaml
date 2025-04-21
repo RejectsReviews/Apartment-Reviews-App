@@ -1,32 +1,39 @@
-
 services:
 - type: web
-  name: flask-postgres-api
+  name: apartment-reviews-app
   env: python
-  repo: https://github.com/uwidcit/flaskmvc.git
+  repo: https://github.com/RejectsReviews/Apartment-Reviews-App.git
   plan: free
   branch: main
-  healthCheckPath: /healthcheck
-  buildCommand: "pip install -r requirements.txt"
-  startCommand: "gunicorn wsgi:app"
+  buildCommand: "pip install -r requirements.txt && python -m flask db init || true && python -m flask db migrate || true && python -m flask db upgrade"
+  startCommand: "gunicorn -c gunicorn_config.py 'App.main:create_app()'"
   envVars:
-  - fromGroup: flask-postgres-api-settings
+  - key: FLASK_APP
+    value: App/main.py
+  - key: ENV
+    value: production
+  - key: SECRET_KEY
+    generateValue: true
+  - key: DATABASE_URL
+    fromDatabase:
+      name: apartment-reviews-db
+      property: connectionString
   - key: POSTGRES_URL
     fromDatabase:
-      name: flask-postgres-api-db
+      name: apartment-reviews-db
       property: host
   - key: POSTGRES_USER
     fromDatabase:
-      name: flask-postgres-api-db
+      name: apartment-reviews-db
       property: user
   - key: POSTGRES_PASSWORD
     fromDatabase:
-      name: flask-postgres-api-db
+      name: apartment-reviews-db
       property: password
   - key: POSTGRES_DB
     fromDatabase:
-      name: flask-postgres-api-db
-      property: database 
+      name: apartment-reviews-db
+      property: database
 
 envVarGroups:
 - name: flask-postgres-api-settings
@@ -38,6 +45,6 @@ envVarGroups:
     
 
 databases:
-- name: flask-postgres-api-db
+- name: apartment-reviews-db
   plan: free
-  databaseName: mydb
+  databaseName: apartment_reviews

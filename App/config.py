@@ -6,6 +6,12 @@ def load_config(app, overrides):
     else:
         app.config.from_object('App.default_config')
     app.config.from_prefixed_env()
+    
+    # Prioritize DATABASE_URL from environment over config files
+    database_url = os.environ.get('DATABASE_URL')
+    if database_url:
+        app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+        
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.config['PREFERRED_URL_SCHEME'] = 'https'
