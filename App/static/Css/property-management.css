@@ -1,0 +1,46 @@
+/* Styles for property management pages */
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.edit-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.no-apartments {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #555;
+}
+
+.page-title {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 28px;
+  color: #333;
+} 

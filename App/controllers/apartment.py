@@ -94,3 +94,46 @@ def unsave_apartment_for_tenant(apartment_id, tenant):
     except Exception as e:
         db.session.rollback()
         return False
+
+def get_apartments_by_landlord(landlord_id):
+    """Get all apartments owned by a landlord"""
+    return Apartment.query.filter_by(landlord_id=landlord_id).all()
+
+def update_apartment(apartment_id, title, description, address, city, price, bedrooms, bathrooms, verified_tenants=None):
+    """Update an existing apartment"""
+    try:
+        apartment = Apartment.query.get(apartment_id)
+        if apartment:
+            apartment.title = title
+            apartment.description = description
+            apartment.address = address
+            apartment.city = city
+            apartment.price = price
+            apartment.bedrooms = bedrooms
+            apartment.bathrooms = bathrooms
+            apartment.verified_tenants = verified_tenants
+            
+            db.session.commit()
+            return apartment
+        return None
+    except Exception as e:
+        db.session.rollback()
+        return None
+
+def delete_apartment(apartment_id):
+    """Delete an apartment by ID"""
+    try:
+        apartment = Apartment.query.get(apartment_id)
+        if apartment:
+            apartment.amenities.clear()
+            
+            for review in apartment.reviews:
+                db.session.delete(review)
+            
+            db.session.delete(apartment)
+            db.session.commit()
+            return True
+        return False
+    except Exception as e:
+        db.session.rollback()
+        return False

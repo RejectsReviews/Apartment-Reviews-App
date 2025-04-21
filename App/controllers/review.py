@@ -21,3 +21,17 @@ def get_reviews_by_apartment(apartment_id):
 def get_reviews_by_user(user_id):
     """Get all reviews by a user"""
     return Review.query.filter_by(user_id=user_id).all()
+
+def get_average_rating(apartment_id):
+    """Calculate the average rating for an apartment"""
+    reviews = get_reviews_by_apartment(apartment_id)
+    if not reviews or len(reviews) == 0:
+        return 0
+    
+    total = sum(review.rating for review in reviews)
+    return round(total / len(reviews), 1)
+
+def get_reviews_count(apartment_id):
+    """Get the number of reviews for an apartment"""
+    reviews = get_reviews_by_apartment(apartment_id)
+    return len(reviews) if reviews else 0

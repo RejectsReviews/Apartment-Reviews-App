@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Apartment Listings</title>
+  <title>My Properties</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/landLordNav.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/ApartmentsListing.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/footer.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/flash.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='Css/property-management.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <script src="{{ url_for('static', filename='Javascript/ApartmentListing.js') }}" defer></script>
 </head>
 <body>
 
@@ -16,22 +16,15 @@
   <nav class="navbar">
     <div class="navbar-container">
       <div class="logo">
-        <a href="{{ url_for('index_views.index_page') }}">
+        <a href="{{ url_for('apartment_views.apartments_listing') }}">
           <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
           <span class="logo-text">AptReview</span>
         </a>
       </div>
       <ul class="nav-links">
         <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
-        {% if not is_tenant %}
-        <!-- Landlord-specific options -->
         <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
         <li><a href="{{ url_for('apartment_views.my_properties') }}">My Properties</a></li>
-        {% else %}
-        <!-- Tenant-specific options -->
-        <li><a href="#">My Reviews</a></li>
-        <li><a href="{{ url_for('apartment_views.saved_apartments') }}">Saved Apartments</a></li>
-        {% endif %}
         <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
       </ul>
     </div>
@@ -48,32 +41,13 @@
     {% endwith %}
   </div>
 
-  <!-- Search Bar -->
-  <div class="search-container">
-    <form id="search-form" action="{{ url_for('apartment_views.apartments_listing') }}" method="GET" class="search-group">
-      <input type="text" name="location" class="search-bar" placeholder="Search by location..." value="{{ request.args.get('location', '') }}">
-      <select name="amenity" class="amenities-filter">
-        <option value="">Filter by Amenity</option>
-        {% for amenity in all_amenities %}
-          <option value="{{ amenity.name }}" {% if request.args.get('amenity') == amenity.name %}selected{% endif %}>{{ amenity.name }}</option>
-        {% endfor %}
-      </select>
-      <button type="submit" class="search-button">Search</button>
-    </form>
-  </div>
+  <h1 class="page-title">My Properties</h1>
 
   <!-- Main Listings Content -->
   <main class="apartments-grid">
     {% if apartments %}
       {% for apartment in apartments %}
       <div class="apartment-card">
-        {% if is_tenant %}
-        <button class="save-button {% if apartment in current_user.saved_apartments %}saved{% endif %}" 
-                data-apartment-id="{{ apartment.id }}"
-                title="{% if apartment in current_user.saved_apartments %}Remove from saved{% else %}Save apartment{% endif %}">
-          <i class="{% if apartment in current_user.saved_apartments %}fas{% else %}far{% endif %} fa-heart"></i>
-        </button>
-        {% endif %}
         <div class="image-slideshow">
           <!-- Check if apartment has a cover image -->
           {% set cover_image = get_apartment_images(apartment.id, 'cover') %}
@@ -118,13 +92,16 @@
             {% endif %}
           </div>
           {% endif %}
-          <a href="{{ url_for('apartment_views.apartment_details', apartment_id=apartment.id) }}" class="view-details">View Details</a>
+          <div class="action-buttons">
+            <a href="{{ url_for('apartment_views.edit_apartment', apartment_id=apartment.id) }}" class="edit-btn">Edit</a>
+            <a href="{{ url_for('apartment_views.delete_apartment_route', apartment_id=apartment.id) }}" class="delete-btn" onclick="return confirm('Are you sure you want to delete this listing?');">Delete</a>
+          </div>
         </div>
       </div>
       {% endfor %}
     {% else %}
       <div class="no-apartments">
-        <p>No apartments available at this time.</p>
+        <p>You don't have any properties listed. <a href="{{ url_for('apartment_views.create_apartment_page') }}">Create your first listing!</a></p>
       </div>
     {% endif %}
   </main>
@@ -133,6 +110,5 @@
   <footer class="footer">
     <p>&copy; 2025 Apartment Reviews. All rights reserved.</p>
   </footer>
-
 </body>
-</html>
+</html> 

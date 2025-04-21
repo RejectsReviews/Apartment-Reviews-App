@@ -4,9 +4,26 @@ $(document).ready(function() {
     width: "100%" 
   });
   
-  $('.amenities-select').select2({ 
-    placeholder: "Select amenities", 
-    width: "100%" 
+  $('.amenities-select').select2({
+    placeholder: "Select amenities",
+    width: "100%",
+    closeOnSelect: false,
+    allowClear: true,
+    tags: false
+  }).on("select2:open", function() {
+    $(".select2-results__options").css({
+      "padding": "4px"
+    });
+  });
+
+  const selectedAmenities = $('.amenities-select').data('selected') || [];
+  if (selectedAmenities.length > 0) {
+    $('.amenities-select').val(selectedAmenities).trigger('change');
+  }
+  
+  fixSelect2Spacing();
+  $('.amenities-select').on('change', function() {
+    fixSelect2Spacing();
   });
 
   $('input[name="cover_image"]').change(function() {
@@ -35,6 +52,17 @@ $(document).ready(function() {
   });
 });
 
+function fixSelect2Spacing() {
+  setTimeout(function() {
+    $(".select2-container--default .select2-selection--multiple .select2-selection__rendered").css({
+      "display": "block",
+      "padding": "0",
+      "margin": "0",
+      "line-height": "1.5"
+    });
+  }, 50);
+}
+
 function previewImage(input, previewElementId) {
   const preview = $(`#${previewElementId}`);
   
@@ -48,4 +76,73 @@ function previewImage(input, previewElementId) {
   } else {
     preview.hide();
   }
-} 
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof $.fn.select2 === 'function') {
+        $('.amenities-select').select2({
+            placeholder: "Select amenities...",
+            allowClear: true,
+            width: '100%'
+        });
+    }
+
+    const coverImageInput = document.querySelector('input[name="cover_image"]');
+    const coverPreviewArea = document.getElementById('cover-image-preview');
+    
+    if (coverImageInput && coverPreviewArea) {
+        coverImageInput.addEventListener('change', function() {
+            showImagePreview(this.files[0], coverPreviewArea);
+        });
+    }
+    
+    const additionalImagesInput = document.querySelector('input[name="additional_images"]');
+    const additionalPreviewArea = document.getElementById('additional-images-preview');
+    
+    if (additionalImagesInput && additionalPreviewArea) {
+        additionalImagesInput.addEventListener('change', function() {
+            additionalPreviewArea.innerHTML = '';
+            
+            const files = Array.from(this.files).slice(0, 4);
+            
+            files.forEach(file => {
+                const previewContainer = document.createElement('div');
+                previewContainer.className = 'preview-thumbnail';
+                
+                const img = document.createElement('img');
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                }
+                
+                reader.readAsDataURL(file);
+                previewContainer.appendChild(img);
+                additionalPreviewArea.appendChild(previewContainer);
+            });
+        });
+    }
+    
+    function showImagePreview(file, previewElement) {
+        if (!file || !previewElement) return;
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            previewElement.innerHTML = '';
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            previewElement.appendChild(img);
+        }
+        
+        reader.readAsDataURL(file);
+    }
+    
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        const label = checkbox.closest('label');
+        if (label) {
+            label.classList.add('checkbox-label');
+        }
+    });
+}); 

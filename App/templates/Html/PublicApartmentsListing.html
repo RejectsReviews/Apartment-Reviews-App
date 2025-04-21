@@ -16,23 +16,29 @@
   <nav class="navbar">
     <div class="navbar-container">
       <div class="logo">
-        <a href="{{ url_for('index_views.index_page') }}">
+        <a href="{{ url_for('apartment_views.public_apartments_listing') }}">
           <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
           <span class="logo-text">AptReview</span>
         </a>
       </div>
       <ul class="nav-links">
-        <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
-        {% if not is_tenant %}
-        <!-- Landlord-specific options -->
-        <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
-        <li><a href="{{ url_for('apartment_views.my_properties') }}">My Properties</a></li>
+        <li><a href="{{ url_for('apartment_views.public_apartments_listing') }}">View Listings</a></li>
+        {% if is_authenticated %}
+          {% if not is_tenant %}
+          <!-- Landlord-specific options -->
+          <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
+          <li><a href="{{ url_for('apartment_views.my_properties') }}">My Properties</a></li>
+          {% else %}
+          <!-- Tenant-specific options -->
+          <li><a href="#">My Reviews</a></li>
+          <li><a href="{{ url_for('apartment_views.saved_apartments') }}">Saved Apartments</a></li>
+          {% endif %}
+          <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
         {% else %}
-        <!-- Tenant-specific options -->
-        <li><a href="#">My Reviews</a></li>
-        <li><a href="{{ url_for('apartment_views.saved_apartments') }}">Saved Apartments</a></li>
+          <!-- Non-authenticated user options -->
+          <li><a href="{{ url_for('auth_views.login_page') }}">Login</a></li>
+          <li><a href="{{ url_for('auth_views.signup_page') }}">Sign Up</a></li>
         {% endif %}
-        <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
       </ul>
     </div>
   </nav>
@@ -50,7 +56,7 @@
 
   <!-- Search Bar -->
   <div class="search-container">
-    <form id="search-form" action="{{ url_for('apartment_views.apartments_listing') }}" method="GET" class="search-group">
+    <form id="search-form" action="{{ url_for('apartment_views.public_apartments_listing') }}" method="GET" class="search-group">
       <input type="text" name="location" class="search-bar" placeholder="Search by location..." value="{{ request.args.get('location', '') }}">
       <select name="amenity" class="amenities-filter">
         <option value="">Filter by Amenity</option>
@@ -118,7 +124,9 @@
             {% endif %}
           </div>
           {% endif %}
-          <a href="{{ url_for('apartment_views.apartment_details', apartment_id=apartment.id) }}" class="view-details">View Details</a>
+          <a href="{{ url_for('apartment_views.apartment_details', apartment_id=apartment.id) }}" class="view-details">
+            View Details
+          </a>
         </div>
       </div>
       {% endfor %}
@@ -135,4 +143,4 @@
   </footer>
 
 </body>
-</html>
+</html> 

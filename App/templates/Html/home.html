@@ -23,7 +23,15 @@
       <nav>
         <ul class="nav-links" id="navLinks">
           {% if is_authenticated %}
-            <li><a href="#">My Profile</a></li>
+            {% if current_user.user_type == 'Landlord' %}
+              <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
+              <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
+              <li><a href="{{ url_for('apartment_views.my_properties') }}">My Properties</a></li>
+            {% else %}
+              <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
+              <li><a href="#">My Reviews</a></li>
+              <li><a href="{{ url_for('apartment_views.saved_apartments') }}">Saved Apartments</a></li>
+            {% endif %}
             <li><a href="{{ url_for('auth_views.logout_action') }}">Logout</a></li>
           {% else %}
             <li><a href="{{ url_for('auth_views.login_page') }}">Login</a></li>
@@ -47,11 +55,11 @@
       {% if is_authenticated %}
         <p>Welcome back, {{ current_user.username }}!</p>
         <div class="button-group">
-          <a href="#" class="btn">Browse Apartments</a>
+          <a href="{{ url_for('apartment_views.apartments_listing') }}" class="btn">Browse Apartments</a>
           {% if current_user.user_type == 'Landlord' %}
-            <a href="#" class="btn">Manage Your Properties</a>
+            <a href="{{ url_for('apartment_views.my_properties') }}" class="btn">Manage Your Properties</a>
           {% else %}
-            <a href="#" class="btn">Write a Review</a>
+            <a href="{{ url_for('apartment_views.saved_apartments') }}" class="btn">Your Saved Apartments</a>
           {% endif %}
         </div>
       {% else %}

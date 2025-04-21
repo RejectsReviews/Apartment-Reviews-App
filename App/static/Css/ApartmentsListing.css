@@ -375,3 +375,26 @@ body {
 .heart-button.saved i {
   color: #fa898d;
 }
+
+/* Average Rating styling */
+.apartment-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.rating-stars {
+  display: flex;
+  margin-right: 5px;
+}
+
+.rating-stars i {
+  color: #ffd700;
+  font-size: 14px;
+  margin-right: 2px;
+}
+
+.rating-text {
+  font-size: 14px;
+  color: var(--dark-gray);
+}

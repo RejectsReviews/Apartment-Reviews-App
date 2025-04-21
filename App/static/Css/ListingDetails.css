@@ -15,6 +15,12 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--light-gray);
   color: #333;
+  overflow-y: auto; /* Ensure vertical scrolling is enabled */
+  min-height: 100vh;
+}
+
+html {
+  overflow-y: scroll; /* Always show scrollbar to prevent layout shifts */
 }
 
 .navbar {
@@ -50,7 +56,7 @@ body {
 
 .content {
   padding: 20px;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: auto;
 }
 
@@ -60,6 +66,30 @@ body {
   padding: 20px;
   margin-bottom: 25px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Two-column layout styles */
+.two-column-layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 25px;
+  position: relative; /* Ensure proper positioning */
+}
+
+.main-column {
+  /* Main content column (apartment details) */
+  position: relative;
+}
+
+.reviews-column {
+  /* Reviews column */
+  position: relative;
+}
+
+.reviews-container {
+  max-height: 800px;
+  overflow-y: auto;
+  padding-right: 5px;
 }
 
 .image-carousel {
@@ -114,11 +144,16 @@ body {
 }
 
 .map-placeholder {
-  flex: 1;
-  background: #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-style: italic;
+  color: #666;
+  background-color: rgba(255,255,255,0.8);
+  padding: 10px 20px;
+  border-radius: 5px;
+  z-index: 2;
 }
 
 .rating-average {
@@ -406,6 +441,16 @@ body {
 }
 
 /* Responsive adjustments */
+@media (max-width: 1024px) {
+  .two-column-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .reviews-container {
+    max-height: none;
+  }
+}
+
 @media (max-width: 768px) {
   .image-gallery {
     flex-direction: column;
@@ -416,6 +461,10 @@ body {
   }
   
   .apartment-info-detailed {
+    grid-template-columns: 1fr;
+  }
+  
+  .two-column-layout {
     grid-template-columns: 1fr;
   }
 }
@@ -487,18 +536,135 @@ body {
 }
 
 /* Map container styles */
-.map-container {
-  width: 100%;
-  height: 300px;
-  border-radius: 8px;
-  margin-top: 10px;
-  background-color: #f0f0f0;
+.map-wrapper {
   position: relative;
-  z-index: 1;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  min-height: 300px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  border: 2px solid #ddd;
   overflow: hidden;
+  display: block;
 }
 
-/* Map error message */
+.map-container {
+  width: 100% !important;
+  height: 300px !important;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  display: block !important;
+}
+
+/* Essential for map visibility */
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1;
+  background: #f7f7f7 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+.leaflet-tile-container,
+.leaflet-tile {
+  visibility: visible !important;
+}
+
+/* Loading indicator */
+.map-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  font-size: 16px;
+  color: #333;
+}
+
+.map-loading::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  border: 3px solid #ccc;
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Fullscreen controls */
+.map-fullscreen-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: white;
+  border: none;
+  border-radius: 4px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  transition: background-color 0.2s;
+}
+
+.map-fullscreen-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.map-fullscreen-btn i {
+  font-size: 16px;
+  color: #333;
+}
+
+.fullscreen-map {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  border-radius: 0;
+  border: none;
+}
+
+.map-fullscreen-exit {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background-color: white;
+  border: none;
+  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.map-fullscreen-exit i {
+  font-size: 18px;
+  color: #333;
+}
+
+/* Error message */
 .map-error {
   display: flex;
   align-items: center;
@@ -508,7 +674,7 @@ body {
   text-align: center;
   padding: 20px;
   font-style: italic;
-  background-color: rgba(240, 240, 240, 0.7);
+  background-color: rgba(240, 240, 240, 0.9);
   border-radius: 8px;
 }
 
@@ -518,13 +684,16 @@ body {
   flex-direction: column;
   min-height: 100vh;
   position: relative;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .content {
   max-width: 1200px;
   margin: 30px auto;
-  padding: 0 20px;
+  padding: 0 20px 60px 20px; /* Added bottom padding to ensure enough space */
   flex: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .location-section {
@@ -590,4 +759,27 @@ body {
 
 .save-button.saved i {
   color: var(--primary-color);
+}
+
+/* Average Rating styling */
+.average-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.rating-stars {
+  display: flex;
+  margin-right: 8px;
+}
+
+.rating-stars i {
+  color: #ffd700;
+  font-size: 18px;
+  margin-right: 3px;
+}
+
+.rating-value {
+  font-size: 16px;
+  color: #444;
 }
