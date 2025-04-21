@@ -15,13 +15,19 @@
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-container">
-      <div class="logo">
-        <a href="{{ url_for('index_views.index_page') }}">
+      <div class="navbar-brand">
+        <a href="{{ url_for('index_views.index_page') }}" class="navbar-logo">
           <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
+          <span>Apartment Reviews</span>
         </a>
       </div>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
       <ul class="nav-links">
-        <li><a href="{{ url_for('apartment_views.public_apartments_listing') }}">View Listings</a></li>
+        <li><a href="{{ url_for('apartment_views.public_apartments_listing') }}" class="active">View Listings</a></li>
         {% if not is_tenant %}
         <!-- Landlord-specific options -->
         <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
@@ -31,7 +37,7 @@
         <li><a href="#">My Reviews</a></li>
         <li><a href="{{ url_for('apartment_views.saved_apartments') }}">Saved Apartments</a></li>
         {% endif %}
-        <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
+        <li><a href="{{ url_for('auth_views.logout_action') }}" class="nav-button">Sign Out</a></li>
       </ul>
     </div>
   </nav>

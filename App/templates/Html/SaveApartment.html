@@ -6,28 +6,40 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/navbar.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/ApartmentsListing.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/footer.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='Css/SaveApartment.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <script src="{{ url_for('static', filename='Javascript/SavedApartments.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='JavaScript/SaveApartment.js') }}" defer></script>
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-container">
-      <div class="logo">
-        <a href="{{ url_for('index_views.index_page') }}">
+      <div class="navbar-brand">
+        <a href="{{ url_for('index_views.index_page') }}" class="navbar-logo">
           <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
-          <span class="logo-text">AptReview</span>
+          <span>Apartment Reviews</span>
         </a>
       </div>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
       <ul class="nav-links">
-        <li><a href="{{ url_for('index_views.index_page') }}">Home</a></li>
-        <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
-        <li><a href="#">My Reviews</a></li>
+        <li><a href="{{ url_for('apartment_views.public_apartments_listing') }}">View Listings</a></li>
+        <li><a href="{{ url_for('review_views.tenant_reviews') }}" id="myReviewsLink">My Reviews</a></li>
         <li><a href="{{ url_for('apartment_views.saved_apartments') }}" class="active">Saved Apartments</a></li>
-        <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
+        <li><a href="{{ url_for('auth_views.logout_action') }}" class="nav-button">Sign Out</a></li>
       </ul>
     </div>
   </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>My Saved Apartments</h1>
+    </div>
+  </div>
 
   <!-- Main Listings Content -->
   <main class="apartments-grid">

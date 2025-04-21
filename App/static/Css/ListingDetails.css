@@ -1,8 +1,8 @@
 /* Adding styles for apartment details page */
 :root {
-  --primary-color: #00CFFF;  /* Cyan */
+  --primary-color: #346eb9;  /* Cyan */
   --secondary-color: #FFFFFF;
-  --accent-color: #FA898D;   /* Coral accent */
+  --accent-color: #000000;   /* Coral accent */
   --soft-bg: #F5F7FA;
   --text-dark: #333333;
   --frosted-glass: rgba(255, 255, 255, 0.2);

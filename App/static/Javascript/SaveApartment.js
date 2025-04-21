@@ -47,4 +47,35 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // My Reviews navigation function that uses both direct navigation and fallback
+    function goToMyReviews(event) {
+        // Prevent the default link behavior
+        event.preventDefault();
+        
+        // Get the review link URL from the href attribute
+        const reviewsUrl = document.getElementById('myReviewsLink').getAttribute('href');
+        
+        // Navigate using JavaScript
+        window.location.href = reviewsUrl;
+    }
+    
+    // Navbar toggle functionality
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (navToggle) {
+        navToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+    }
+    
+    // Add event listener directly to My Reviews link for mobile
+    const myReviewsLink = document.getElementById('myReviewsLink');
+    if (myReviewsLink) {
+        myReviewsLink.addEventListener('click', function(e) {
+            goToMyReviews(e);
+        });
+    }
 });

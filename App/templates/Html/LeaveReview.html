@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Leave a Review - {{ apartment.title }}</title>
+  <title>{% if edit_mode %}Edit Review{% else %}Leave a Review{% endif %} - {{ apartment.title }}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/navbar.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/footer.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/LeaveReview.css') }}">
@@ -12,14 +12,24 @@
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-container">
-      <div class="logo">
-        <a href="{{ url_for('index_views.index_page') }}">
+      <div class="navbar-brand">
+        <a href="{{ url_for('index_views.index_page') }}" class="navbar-logo">
           <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
+          <span>Apartment Reviews</span>
         </a>
       </div>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
       <ul class="nav-links">
-        <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
-        <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
+        <li><a href="{{ url_for('apartment_views.public_apartments_listing') }}">View Listings</a></li>
+        {% if is_tenant %}
+        <li><a href="{{ url_for('review_views.tenant_reviews') }}">My Reviews</a></li>
+        <li><a href="{{ url_for('apartment_views.saved_apartments') }}">Saved Apartments</a></li>
+        {% endif %}
+        <li><a href="{{ url_for('auth_views.logout_action') }}" class="nav-button">Sign Out</a></li>
       </ul>
     </div>
   </nav>
@@ -27,22 +37,36 @@
   <main class="container">
     <div class="card">
       <div class="back-button-container">
+        {% if edit_mode %}
+        <a href="{{ url_for('review_views.tenant_reviews') }}" class="back-button">
+          <i class="fas fa-arrow-left"></i> Back to My Reviews
+        </a>
+        {% else %}
         <a href="{{ url_for('apartment_views.apartment_details', apartment_id=apartment.id) }}" class="back-button">
           <i class="fas fa-arrow-left"></i> Back to Listing
         </a>
+        {% endif %}
       </div>
       
-      <h1>Write a Review</h1>
+      <h1>{% if edit_mode %}Edit Your Review{% else %}Write a Review{% endif %}</h1>
       <p class="subtitle">{{ apartment.title }}</p>
       <p class="address">{{ apartment.address }}, {{ apartment.city }}</p>
 
+      {% if edit_mode %}
+      <form action="{{ url_for('review_views.update_review_route', review_id=review.id) }}" method="POST">
+        <input type="hidden" name="apartment_id" value="{{ apartment.id }}">
+      {% else %}
       <form action="{{ url_for('review_views.submit_review', apartment_id=apartment.id) }}" method="POST">
-        {{ form.csrf_token }}
+      {% endif %}
+        {% if form and form.csrf_token %}
+          {{ form.csrf_token }}
+        {% endif %}
         <div class="rating-section">
-          <label>Rating</label>
+          <label>How would you rate your experience?</label>
           <div class="star-rating">
             {% for i in range(5, 0, -1) %}
-              <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" required>
+              <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" required 
+                     {% if edit_mode and review.rating == i %}checked{% endif %}>
               <label for="star{{ i }}" class="star">★</label>
             {% endfor %}
           </div>
@@ -51,16 +75,19 @@
         <div class="form-group">
           <label for="title">Review Title</label>
           <input type="text" id="title" name="title" required maxlength="72" 
-                 placeholder="Sum up your experience in one line">
+                 placeholder="Summarize your experience in a headline"
+                 value="{% if edit_mode %}{{ title }}{% endif %}">
         </div>
 
         <div class="form-group">
           <label for="content">Your Review</label>
           <textarea id="content" name="content" required minlength="10"
-                    placeholder="Tell others about your experience..."></textarea>
+                    placeholder="Tell others what you liked or didn't like about this apartment. What was your experience with the landlord? Would you recommend it to others?">{% if edit_mode %}{{ content }}{% endif %}</textarea>
         </div>
 
-        <button type="submit" class="submit-btn">Submit Review</button>
+        <button type="submit" class="submit-btn">
+          {% if edit_mode %}Update Review{% else %}Submit Review{% endif %}
+        </button>
       </form>
     </div>
   </main>

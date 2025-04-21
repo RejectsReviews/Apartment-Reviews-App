@@ -18,17 +18,22 @@
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-container">
-      <div class="logo">
-        <a href="{{ url_for('apartment_views.apartments_listing') }}">
+      <div class="navbar-brand">
+        <a href="{{ url_for('index_views.index_page') }}" class="navbar-logo">
           <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
-          <span class="logo-text">AptReview</span>
+          <span>Apartment Reviews</span>
         </a>
       </div>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
       <ul class="nav-links">
-        <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
+        <li><a href="{{ url_for('apartment_views.public_apartments_listing') }}">View Listings</a></li>
         <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
-        <li><a href="{{ url_for('apartment_views.my_properties') }}">My Properties</a></li>
-        <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
+        <li><a href="{{ url_for('apartment_views.my_properties') }}" class="active">My Properties</a></li>
+        <li><a href="{{ url_for('auth_views.logout_action') }}" class="nav-button">Sign Out</a></li>
       </ul>
     </div>
   </nav>

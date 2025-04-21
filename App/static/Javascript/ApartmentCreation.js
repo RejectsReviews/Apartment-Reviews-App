@@ -5,15 +5,23 @@ $(document).ready(function() {
   });
   
   $('.amenities-select').select2({
-    placeholder: "Select amenities",
+    placeholder: "Select amenities available at your property",
     width: "100%",
     closeOnSelect: false,
-    allowClear: true,
+    allowClear: false,
     tags: false
   }).on("select2:open", function() {
     $(".select2-results__options").css({
       "padding": "4px"
     });
+  });
+
+  // Fix for the clear button positioning
+  $('.select2-selection--multiple').css('position', 'relative');
+  
+  // Add tooltip for clear button
+  $(document).on('mouseenter', '.select2-selection__clear', function() {
+    $(this).attr('title', 'Clear all amenities');
   });
 
   const selectedAmenities = $('.amenities-select').data('selected') || [];
@@ -24,6 +32,7 @@ $(document).ready(function() {
   fixSelect2Spacing();
   $('.amenities-select').on('change', function() {
     fixSelect2Spacing();
+    $('.select2-selection--multiple').css('position', 'relative');
   });
 
   $('input[name="cover_image"]').change(function() {
