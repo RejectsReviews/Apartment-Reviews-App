@@ -18,6 +18,7 @@ services:
     fromDatabase:
       name: apartment-reviews-db
       property: connectionString
+      append: "?sslmode=require"
   - key: POSTGRES_URL
     fromDatabase:
       name: apartment-reviews-db
@@ -34,6 +35,8 @@ services:
     fromDatabase:
       name: apartment-reviews-db
       property: database
+  - key: SSL_MODE
+    value: require
 
 envVarGroups:
 - name: flask-postgres-api-settings
@@ -48,3 +51,4 @@ databases:
 - name: apartment-reviews-db
   plan: free
   databaseName: apartment_reviews
+  ipAllowList: []  # only allow internal connections

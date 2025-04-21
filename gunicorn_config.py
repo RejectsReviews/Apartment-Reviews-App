@@ -26,5 +26,5 @@ pg_password = os.environ.get('POSTGRES_PASSWORD')
 pg_db = os.environ.get('POSTGRES_DB')
 
 if pg_host and pg_user and pg_password and pg_db:
-    DATABASE_URL = f"postgresql://{pg_user}:{pg_password}@{pg_host}/{pg_db}"
+    DATABASE_URL = f"postgresql://{pg_user}:{pg_password}@{pg_host}/{pg_db}?sslmode=require"
     os.environ['DATABASE_URL'] = DATABASE_URL
