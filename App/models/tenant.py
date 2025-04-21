@@ -4,7 +4,7 @@ from App.models.user import User
 class Tenant(User):
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     verified = db.Column(db.Boolean, default=False)
-    phone = db.Column(db.String(120), nullable=False)
+    phone = db.Column(db.String(120), nullable=False, unique=True)
     address = db.Column(db.String(120), nullable=False)
     city = db.Column(db.String(120), nullable=False)
     state = db.Column(db.String(120), nullable=False)
@@ -40,5 +40,5 @@ class Tenant(User):
     @staticmethod
     def get_tenant_by_username(username):
         return Tenant.query.filter_by(username=username).first()
-    
-    
+
+

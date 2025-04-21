@@ -91,6 +91,8 @@ def create_apartment_action():
         from App.controllers.apartment import create_apartment
         from App.controllers.amenity import get_or_create_amenity
         
+        verified_tenants = data.get('verified_tenants', '').strip()
+        
         new_apartment = create_apartment(
             landlord_id=current_user.id,
             title=data['title'],
@@ -99,7 +101,8 @@ def create_apartment_action():
             city=data['city'],
             price=float(data['price']),
             bedrooms=int(data['bedrooms']),
-            bathrooms=int(data['bathrooms'])
+            bathrooms=int(data['bathrooms']),
+            verified_tenants=verified_tenants
         )
         
         if not new_apartment:

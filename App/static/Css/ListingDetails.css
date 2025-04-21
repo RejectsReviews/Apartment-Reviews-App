@@ -545,3 +545,15 @@ body {
   width: 100%;
   margin-top: 40px;
 }
+
+/* Review notice styles */
+.review-notice {
+  color: #666;
+  font-style: italic;
+  background-color: #f8f8f8;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin: 15px 0;
+  text-align: center;
+}
