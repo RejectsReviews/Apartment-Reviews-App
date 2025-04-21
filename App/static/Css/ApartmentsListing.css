@@ -32,6 +32,7 @@ body {
   align-items: center;
   max-width: 800px;
   width: 100%;
+  position: relative;
 }
 
 .search-bar {
@@ -72,6 +73,32 @@ body {
 
 .search-button:hover {
   background-color: var(--dark-color);
+}
+
+/* Location Dropdown Styling */
+.location-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 60%;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: var(--light-gray);
 }
 
 /* Apartments Grid */

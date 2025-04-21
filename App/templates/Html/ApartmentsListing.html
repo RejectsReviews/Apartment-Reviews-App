@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/landLordNav.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/ApartmentsListing.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/footer.css') }}">
+  <script src="{{ url_for('static', filename='Javascript/ApartmentsListing.js') }}" defer></script>
 </head>
 <body>
 
@@ -39,7 +40,7 @@
   <div class="search-container">
     <form id="search-form" action="{{ url_for('apartment_views.apartments_listing') }}" method="GET" class="search-group">
       <input type="text" name="location" class="search-bar" placeholder="Search by location..." value="{{ request.args.get('location', '') }}">
-      <select name="amenity" class="amenities-filter" onchange="this.form.submit()">
+      <select name="amenity" class="amenities-filter">
         <option value="">Filter by Amenity</option>
         <option value="WiFi" {% if request.args.get('amenity') == 'WiFi' %}selected{% endif %}>WiFi</option>
         <option value="Parking" {% if request.args.get('amenity') == 'Parking' %}selected{% endif %}>Parking</option>
