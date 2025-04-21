@@ -59,7 +59,7 @@
     <main class="content">
 
       <div class="back-button-container">
-        <a href="{{ url_for('apartment_views.apartments_listing') }}" class="back-button">
+        <a href="{{ url_for('apartment_views.public_apartments_listing') }}" class="back-button">
           <i class="fas fa-arrow-left"></i> Back to Listings
         </a>
         {% if is_authenticated and is_tenant %}
@@ -214,7 +214,7 @@
               {% for review in reviews %}
               <div class="review-card">
                 <div class="review-header">
-                  <span>{{ review.tenant.username }}</span>
+                  <span>{{ review.tenant.first_name }} {{ review.tenant.last_name }} <span class="username">@{{ review.tenant.username }}</span></span>
                   <div class="review-stars">
                     {% for i in range(review.rating) %}
                       <i class="fas fa-star"></i>

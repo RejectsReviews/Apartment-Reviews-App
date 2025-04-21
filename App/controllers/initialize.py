@@ -6,6 +6,7 @@ from App.controllers.apartment import create_apartment, add_amenity_to_apartment
 from App.controllers.review import create_review
 import os
 import shutil
+import glob
 
 
 def initialize():
@@ -215,7 +216,7 @@ def initialize():
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     
     # Function to set up apartment images
-    def setup_apartment_images(apartment_id, cover_image, additional_images=[]):
+    def setup_apartment_images(apartment_id, cover_image, additional_images=None):
         # Create directory for this apartment
         apartment_dir = os.path.join(UPLOAD_FOLDER, str(apartment_id))
         os.makedirs(apartment_dir, exist_ok=True)
@@ -225,71 +226,62 @@ def initialize():
         if os.path.exists(sample_path):
             shutil.copy(sample_path, os.path.join(apartment_dir, f'cover_{cover_image}'))
         
-        # Add additional images
-        for idx, img in enumerate(additional_images):
-            sample_path = f'App/static/images/sample/{img}'
-            if os.path.exists(sample_path):
-                shutil.copy(sample_path, os.path.join(apartment_dir, f'additional_{idx+1}_{img}'))
+        # If additional_images is provided, use those specific images
+        if additional_images:
+            for idx, img in enumerate(additional_images):
+                sample_path = f'App/static/images/sample/{img}'
+                if os.path.exists(sample_path):
+                    shutil.copy(sample_path, os.path.join(apartment_dir, f'additional_{idx+1}_{img}'))
+        else:
+            # Otherwise, scan for all matching images in the sample directory
+            pattern = f'App/static/images/sample/{apartment_id}_*.jpg'
+            additional_files = glob.glob(pattern)
+            for idx, file_path in enumerate(additional_files):
+                filename = os.path.basename(file_path)
+                shutil.copy(file_path, os.path.join(apartment_dir, f'additional_{idx+1}_{filename}'))
     
     # Ensure the sample directory exists
     sample_dir = 'App/static/images/sample'
     os.makedirs(sample_dir, exist_ok=True)
     
-    # Create placeholder sample images if they don't exist
-    # In a real app, you would have actual image files here
-    # This is just to make sure the code doesn't break if images aren't available
-    placeholder_images = [
-        'apartment1_cover.jpg', 'apartment1_1.jpg', 'apartment1_2.jpg',
-        'apartment2_cover.jpg', 'apartment2_1.jpg',
-        'apartment3_cover.jpg', 'apartment3_1.jpg', 'apartment3_2.jpg',
-        'apartment4_cover.jpg', 'apartment4_1.jpg',
-        'apartment5_cover.jpg', 'apartment5_1.jpg', 'apartment5_2.jpg',
-        'bob_apartment_cover.jpg', 'bob_apartment_1.jpg'
-    ]
-    
     # Try to setup the apartment images
     # Note: This will succeed only if sample images exist
     try:
-        # Bob's apartment
+        # Bob's apartment - Using fixed list of images
         setup_apartment_images(
             bob_apartment.id, 
             'bob_apartment_cover.jpg',
-            ['bob_apartment_1.jpg', 'bob_apartment_2.jpg']
+            ['bob_apartment_1.jpg', 'bob_apartment_2.jpg', 'bob_apartment_3.jpg']
         )
         
-        # Apartment 1
+        # Apartment 1 - Demonstrating automatic discovery of all matching images
         setup_apartment_images(
             apt1.id, 
-            'apartment1_cover.jpg',
-            ['apartment1_1.jpg', 'apartment1_2.jpg', 'apartment1_3.jpg']
+            'apartment1_cover.jpg'
         )
         
         # Apartment 2
         setup_apartment_images(
             apt2.id, 
-            'apartment2_cover.jpg',
-            ['apartment2_1.jpg', 'apartment2_2.jpg']
+            'apartment2_cover.jpg'
         )
         
         # Apartment 3
         setup_apartment_images(
             apt3.id, 
-            'apartment3_cover.jpg',
-            ['apartment3_1.jpg', 'apartment3_2.jpg']
+            'apartment3_cover.jpg'
         )
         
         # Apartment 4
         setup_apartment_images(
             apt4.id, 
-            'apartment4_cover.jpg',
-            ['apartment4_1.jpg', 'apartment4_2.jpg', 'apartment4_3.jpg']
+            'apartment4_cover.jpg'
         )
         
         # Apartment 5
         setup_apartment_images(
             apt5.id, 
-            'apartment5_cover.jpg',
-            ['apartment5_1.jpg', 'apartment5_2.jpg']
+            'apartment5_cover.jpg'
         )
     except Exception as e:
         print(f"Warning: Could not set up apartment images. Please ensure sample images exist in {sample_dir}. Error: {str(e)}")
