@@ -136,9 +136,13 @@
           
           {% if is_tenant %}
           <div class="action-section">
-            <a href="{{ url_for('review_views.leave_review', apartment_id=apartment.id) }}">
-              <button class="review-btn">Leave a Review</button>
-            </a>
+            {% if apartment.verified_tenants and current_user.phone in apartment.verified_tenants.split('\n') %}
+              <a href="{{ url_for('review_views.leave_review', apartment_id=apartment.id) }}">
+                <button class="review-btn">Leave a Review</button>
+              </a>
+            {% else %}
+              <p class="review-notice">Only verified tenants can leave reviews for this apartment</p>
+            {% endif %}
           </div>
           {% endif %}
         </div>

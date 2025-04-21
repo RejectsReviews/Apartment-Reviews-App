@@ -1,7 +1,7 @@
 from App.models import Apartment, Amenity
 from App.database import db
 
-def create_apartment(landlord_id, title, description, address, city, price, bedrooms, bathrooms):
+def create_apartment(landlord_id, title, description, address, city, price, bedrooms, bathrooms, verified_tenants=None):
     try:
         new_apartment = Apartment(
             landlord_id=landlord_id,
@@ -11,7 +11,8 @@ def create_apartment(landlord_id, title, description, address, city, price, bedr
             city=city,
             price=price,
             bedrooms=bedrooms,
-            bathrooms=bathrooms
+            bathrooms=bathrooms,
+            verified_tenants=verified_tenants
         )
         db.session.add(new_apartment)
         db.session.commit()

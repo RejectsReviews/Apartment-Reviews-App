@@ -10,11 +10,12 @@ class Apartment(db.Model):
     price = db.Column(db.Float, nullable=False)
     bedrooms = db.Column(db.Integer, nullable=False)
     bathrooms = db.Column(db.Integer, nullable=False)
+    verified_tenants = db.Column(db.Text, nullable=True)  # Store tenant numbers as comma-separated string
     created_at = db.Column(db.DateTime, default=db.func.now())
     amenities = db.relationship('Amenity', secondary='apartment_amenity', backref=db.backref('apartments', lazy='dynamic'))
     tenant_id = db.Column(db.Integer, db.ForeignKey('tenant.id'), nullable=True)
 
-    def __init__(self, landlord_id, title, description, address, city, price, bedrooms, bathrooms):
+    def __init__(self, landlord_id, title, description, address, city, price, bedrooms, bathrooms, verified_tenants=None):
         self.landlord_id = landlord_id
         self.title = title
         self.description = description
@@ -23,6 +24,7 @@ class Apartment(db.Model):
         self.price = price
         self.bedrooms = bedrooms
         self.bathrooms = bathrooms
+        self.verified_tenants = verified_tenants
 
     def get_json(self):
         return {
@@ -35,6 +37,7 @@ class Apartment(db.Model):
             'price': self.price,
             'bedrooms': self.bedrooms,
             'bathrooms': self.bathrooms,
+            'verified_tenants': self.verified_tenants,
             'created_at': self.created_at,
             'tenant_id': self.tenant_id
         }
@@ -65,8 +68,8 @@ class Apartment(db.Model):
     
     def get_apartment_by_title_json(title):
         return [apartment.get_json() for apartment in Apartment.query.filter_by(title=title).all()]
-    
-    
-    
-    
+
+
+
+
 

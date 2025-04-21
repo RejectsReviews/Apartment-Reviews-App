@@ -22,6 +22,19 @@ def leave_review(apartment_id):
         flash('Apartment not found')
         return redirect(url_for('apartment_views.apartments_listing'))
     
+    # Check if tenant is verified for this apartment
+    if apartment.verified_tenants:
+        verified_numbers = [num.strip() for num in apartment.verified_tenants.split('\n')]
+        if current_user.phone not in verified_numbers:
+            flash('Only verified tenants can leave reviews for this apartment')
+            return redirect(url_for('apartment_views.apartment_details', apartment_id=apartment_id))
+    
+    # Check if tenant has already reviewed this apartment
+    existing_review = Review.query.filter_by(apartment_id=apartment_id, tenant_id=current_user.id).first()
+    if existing_review:
+        flash('You have already reviewed this apartment')
+        return redirect(url_for('apartment_views.apartment_details', apartment_id=apartment_id))
+    
     form = ReviewForm()
     return render_template('Html/LeaveReview.html', apartment=apartment, form=form)
 
@@ -41,6 +54,19 @@ def submit_review(apartment_id):
     if not apartment:
         flash('Apartment not found')
         return redirect(url_for('apartment_views.apartments_listing'))
+
+    # Check if tenant is verified for this apartment
+    if apartment.verified_tenants:
+        verified_numbers = [num.strip() for num in apartment.verified_tenants.split('\n')]
+        if current_user.phone not in verified_numbers:
+            flash('Only verified tenants can leave reviews for this apartment')
+            return redirect(url_for('apartment_views.apartment_details', apartment_id=apartment_id))
+    
+    # Check if tenant has already reviewed this apartment
+    existing_review = Review.query.filter_by(apartment_id=apartment_id, tenant_id=current_user.id).first()
+    if existing_review:
+        flash('You have already reviewed this apartment')
+        return redirect(url_for('apartment_views.apartment_details', apartment_id=apartment_id))
 
     data = request.form
     rating = int(data.get('rating', 0))
