@@ -44,10 +44,32 @@ def register_template_utils(state):
 @apartment_views.route('/apartments', methods=['GET'])
 @jwt_required()
 def apartments_listing():
+    amenity = request.args.get('amenity')
+    location = request.args.get('location')
+    
     apartments = get_all_apartments()
+    
+    if amenity:
+        # Filter apartments that have the selected amenity
+        filtered_apartments = []
+        for apartment in apartments:
+            if any(a.name == amenity for a in apartment.amenities):
+                filtered_apartments.append(apartment)
+        apartments = filtered_apartments
+    
+    if location:
+        # Filter by location (city or address)
+        location = location.lower()
+        filtered_apartments = []
+        for apartment in apartments:
+            if (location in apartment.city.lower() or 
+                location in apartment.address.lower()):
+                filtered_apartments.append(apartment)
+        apartments = filtered_apartments
+
     return render_template('Html/ApartmentsListing.html', 
-                          apartments=apartments,
-                          is_tenant=(current_user.user_type == 'Tenant'))
+                         apartments=apartments,
+                         is_tenant=(current_user.user_type == 'Tenant'))
 
 @apartment_views.route('/apartments/create', methods=['GET'])
 @jwt_required()
