@@ -34,7 +34,7 @@
         <li><a href="{{ url_for('apartment_views.my_properties') }}">My Properties</a></li>
         {% else %}
         <!-- Tenant-specific options -->
-        <li><a href="#">My Reviews</a></li>
+        <li><a href="{{ url_for('review_views.tenant_reviews') }}">My Reviews</a></li>
         <li><a href="{{ url_for('apartment_views.saved_apartments') }}">Saved Apartments</a></li>
         {% endif %}
         <li><a href="{{ url_for('auth_views.logout_action') }}" class="nav-button">Sign Out</a></li>
