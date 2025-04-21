@@ -1,17 +1,25 @@
 from .user import create_user, signup_tenant, signup_landlord
 from App.database import db
-from App.models import Tenant, Landlord
+from App.models import Tenant, Landlord, Apartment, Amenity, Review, User
 from App.controllers.amenity import create_amenity, get_amenity_by_name, get_or_create_amenity
 from App.controllers.apartment import create_apartment, add_amenity_to_apartment
 from App.controllers.review import create_review
 import os
+import logging
 import shutil
 import glob
 
 
-def initialize():
+def initialize(force_reset=False):
+    # Always drop and rebuild tables for flask init
+    logging.info("Dropping existing tables...")
     db.drop_all()
+    
+    # Create tables
+    logging.info("Creating database tables...")
     db.create_all()
+    
+    logging.info("Creating initial users...")
     #Creating the user bob 
     bob = signup_tenant('bob', 'bobpass', 'bob@gmail.com', 'Bob', 'Smith', '5555555555')
     
@@ -27,6 +35,7 @@ def initialize():
     tenant4 = signup_tenant('davidjones', 'password123', 'david.jones@example.com', 'David', 'Jones', '5554567890')
     
     # Add some amenities
+    logging.info("Creating amenities...")
     common_amenities = [
         "WiFi", "Air Conditioning", "Parking", "Laundry", "Pool", "Gym", "Security", "Furnished",
         "Balcony", "Dishwasher", "Walk-in Closet", "Central Heating", "Elevator", "Hardwood Floors",
@@ -54,6 +63,7 @@ def initialize():
             create_amenity(amenity_name)
     
     # Create Bob's special apartment that he can review
+    logging.info("Creating apartments...")
     bob_apartment = create_apartment(
         landlord_id=landlord1.id,
         title="Bob's Apartment - DEMO UNIT",
@@ -138,6 +148,7 @@ def initialize():
     )
     
     # Add amenities to apartments
+    logging.info("Adding amenities to apartments...")
     # Apartment 1 amenities
     amenities1 = ["WiFi", "Air Conditioning", "Dishwasher", "Hardwood Floors", "Stainless Steel Appliances", "City View", "Elevator", "Security"]
     for amenity_name in amenities1:
@@ -174,6 +185,7 @@ def initialize():
             add_amenity_to_apartment(apt5.id, amenity.id)
     
     # Add reviews
+    logging.info("Adding reviews...")
     # Reviews for Apartment 1
     create_review(
         apartment_id=apt1.id,
@@ -209,31 +221,25 @@ def initialize():
         landlord_id=landlord2.id
     )
     
-    # Setup image directories and add sample images for apartments
+    logging.info("Setting up apartment images...")
     UPLOAD_FOLDER = 'App/static/images/apartments'
     
-    # Create the base directory if it doesn't exist
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     
-    # Function to set up apartment images
     def setup_apartment_images(apartment_id, cover_image, additional_images=None):
-        # Create directory for this apartment
         apartment_dir = os.path.join(UPLOAD_FOLDER, str(apartment_id))
         os.makedirs(apartment_dir, exist_ok=True)
         
-        # Add cover image
         sample_path = f'App/static/images/sample/{cover_image}'
         if os.path.exists(sample_path):
             shutil.copy(sample_path, os.path.join(apartment_dir, f'cover_{cover_image}'))
         
-        # If additional_images is provided, use those specific images
         if additional_images:
             for idx, img in enumerate(additional_images):
                 sample_path = f'App/static/images/sample/{img}'
                 if os.path.exists(sample_path):
                     shutil.copy(sample_path, os.path.join(apartment_dir, f'additional_{idx+1}_{img}'))
         else:
-            # Otherwise, scan for all matching images in the sample directory
             pattern = f'App/static/images/sample/{apartment_id}_*.jpg'
             additional_files = glob.glob(pattern)
             for idx, file_path in enumerate(additional_files):
@@ -245,7 +251,6 @@ def initialize():
     os.makedirs(sample_dir, exist_ok=True)
     
     # Try to setup the apartment images
-    # Note: This will succeed only if sample images exist
     try:
         # Bob's apartment - Using fixed list of images
         setup_apartment_images(
@@ -254,37 +259,43 @@ def initialize():
             ['bob_apartment_1.jpg', 'bob_apartment_2.jpg', 'bob_apartment_3.jpg']
         )
         
-        # Apartment 1 - Demonstrating automatic discovery of all matching images
+        # Apartment 1 - Explicitly listing images like Bob's apartment
         setup_apartment_images(
             apt1.id, 
-            'apartment1_cover.jpg'
+            'apartment1_cover.jpg',
+            ['apartment1_1.jpg', 'apartment1_2.jpg', 'apartment1_3.jpg']
         )
         
         # Apartment 2
         setup_apartment_images(
             apt2.id, 
-            'apartment2_cover.jpg'
+            'apartment2_cover.jpg',
+            ['apartment2_1.jpg', 'apartment2_2.jpg', 'apartment2_3.jpg']
         )
         
         # Apartment 3
         setup_apartment_images(
             apt3.id, 
-            'apartment3_cover.jpg'
+            'apartment3_cover.jpg',
+            ['apartment3_1.jpg', 'apartment3_2.jpg', 'apartment3_3.jpg']
         )
         
         # Apartment 4
         setup_apartment_images(
             apt4.id, 
-            'apartment4_cover.jpg'
+            'apartment4_cover.jpg',
+            ['apartment4_1.jpg', 'apartment4_2.jpg', 'apartment4_3.jpg']
         )
         
         # Apartment 5
         setup_apartment_images(
             apt5.id, 
-            'apartment5_cover.jpg'
+            'apartment5_cover.jpg',
+            ['apartment5_1.jpg', 'apartment5_2.jpg', 'apartment5_3.jpg']
         )
     except Exception as e:
-        print(f"Warning: Could not set up apartment images. Please ensure sample images exist in {sample_dir}. Error: {str(e)}")
-        print("The app will still work, but apartments will not have images.")
+        logging.warning(f"Could not set up apartment images. Please ensure sample images exist in {sample_dir}. Error: {str(e)}")
+        logging.info("The app will still work, but apartments will not have images.")
     
+    logging.info("Database initialization complete")
     return db
