@@ -1,7 +1,7 @@
 from App.models import Tenant
 from App.database import db
 
-def create_tenant(username, password, email, phone, address, city, state):
+def create_tenant(username, password, email, phone, address=None, city=None, state=None):
     try:
         new_tenant = Tenant(username=username, password=password, phone=phone, 
                           address=address, city=city, state=state, email=email)

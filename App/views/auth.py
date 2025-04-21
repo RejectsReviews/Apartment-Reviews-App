@@ -74,10 +74,7 @@ def signup_action():
                 email=data['email'],
                 first_name=data['first_name'],
                 last_name=data['last_name'],
-                phone=phone,
-                address=data.get('address', ''),
-                city=data.get('city', ''),
-                state=data.get('state', '')
+                phone=phone
             )
         else:
             user = signup_landlord(
