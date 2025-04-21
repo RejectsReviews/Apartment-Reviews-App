@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ apartment.title }} - Details</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/ListingDetails.css') }}" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='Css/landLordNav.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='Css/navbar.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/footer.css') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   
@@ -24,12 +24,10 @@
       <div class="logo">
         <a href="{{ url_for('index_views.index_page') }}">
           <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
-          <span class="logo-text">AptReview</span>
         </a>
       </div>
       <ul class="nav-links">
-        <li><a href="{{ url_for('index_views.index_page') }}">Home</a></li>
-        <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
+        <li><a href="{{ url_for('apartment_views.public_apartments_listing') }}">View Listings</a></li>
         {% if is_authenticated %}
           {% if not is_tenant %}
           <!-- Landlord-specific options -->

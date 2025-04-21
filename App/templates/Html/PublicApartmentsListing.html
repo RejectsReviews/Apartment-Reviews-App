@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Apartment Listings</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='Css/landLordNav.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='Css/navbar.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/ApartmentsListing.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/footer.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/flash.css') }}">
@@ -18,7 +18,6 @@
       <div class="logo">
         <a href="{{ url_for('apartment_views.public_apartments_listing') }}">
           <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
-          <span class="logo-text">AptReview</span>
         </a>
       </div>
       <ul class="nav-links">

@@ -1,3 +1,14 @@
+/* Variables to match other pages */
+:root {
+  --primary-color: #00CFFF;  /* Cyan */
+  --secondary-color: #FFFFFF;
+  --accent-color: #FA898D;   /* Coral accent */
+  --soft-bg: #F5F7FA;
+  --text-dark: #333333;
+  --frosted-glass: rgba(255, 255, 255, 0.2);
+  --frosted-border: rgba(255, 255, 255, 0.3);
+}
+
 /* Reset styles */
 * {
     margin: 0;
@@ -6,9 +17,9 @@
   }
   
   body {
-    background: #ffffff;
-    color: #445E93;
-    font-family: 'Segoe UI', sans-serif;
+  background-color: var(--soft-bg);
+  color: var(--text-dark);
+  font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -17,26 +28,62 @@
   /* Title */
   main h2 {
     text-align: center;
-    color: #9E050D;
+  color: var(--primary-color);
     font-size: 2rem;
     margin-bottom: 2rem;
-    padding: 10px 20px;
-    background: linear-gradient(135deg, rgba(250,137,141,0.2), rgba(250,137,141,0.4));
-    border-radius: 8px;
-    border: 2px solid rgba(250,137,141,0.3);
-    box-shadow: 0 0 10px rgba(250,137,141,0.3);
-    backdrop-filter: blur(4px);
+  padding: 12px 24px;
+  background: var(--frosted-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid var(--accent-color);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+  margin: 0 auto 2rem auto;
+}
+
+main {
+  margin: 30px auto;
+  padding: 0 20px;
+  max-width: 1200px;
   }
   
   /* Container */
   .form-container {
-    background: rgba(255,255,255,0.95);
+  background: var(--frosted-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid var(--accent-color);
     padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
     width: 100%;
     margin: 2rem auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Flash Messages */
+.flash-messages {
+  margin-bottom: 20px;
+}
+
+.flash-message {
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid var(--accent-color);
+  color: var(--text-dark);
+  transition: background-color 0.3s ease;
+}
+
+.flash-message:hover {
+  background: rgba(255, 255, 255, 0.35);
   }
   
   /* Form layout */
@@ -74,6 +121,43 @@
     min-width: 0;
     width: 100%;
   }
+
+/* Form group styling */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+/* Labels and Inputs */
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 2px solid var(--accent-color);
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  color: var(--text-dark);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 207, 255, 0.3);
+  border-color: var(--primary-color);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
   
   /* Split input for beds/baths */
   .split-input {
@@ -85,308 +169,68 @@
     flex: 1;
   }
   
-  /* Labels and Inputs */
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: #445E93;
-  }
-  
-  input, select, textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 6px;
-    border: 2px solid #ccc;
-    font-size: 0.95rem;
-    transition: border-color 0.3s;
-  }
-  
-  input:focus, select:focus, textarea:focus {
-    border-color: #FA898D;
-    outline: none;
-  }
-  
-  select[multiple] {
-    height: auto;
-    min-height: 100px;
-  }
-  
   /* Submit Button */
   button {
-    background: #FA898D;
-    color: #fff;
-    font-weight: bold;
-    padding: 0.9rem 1.5rem;
+  background-color: var(--accent-color);
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
     font-size: 1rem;
     border: none;
-    border-radius: 6px;
+  border-radius: 30px;
     cursor: pointer;
-    transition: background 0.3s ease;
+  transition: all 0.3s ease;
     align-self: center;
     width: auto;
     min-width: 200px;
+  box-shadow: 0 4px 10px rgba(250, 137, 141, 0.3);
   }
   
   button:hover {
-    background: #9E050D;
-  }
+  background-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 207, 255, 0.3);
+}
 
-  textarea {
-    resize: vertical;
-    border: 2px solid #ccc;
-    padding: 0.75rem;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    transition: border-color 0.3s ease;
-    min-height: 120px;
-  }
-  
-  textarea:focus {
-    border-color: #FA898D;
-    outline: none;
-  }
-  
-  /* Apartment Creation Form Styling */
-  :root {
-    --primary-color: #fa898d;  /* Light coral */
-    --secondary-color: #445e93;  /* Yinmn blue */
-    --accent-color: #7eb2dd;  /* Carolina blue */
-    --dark-color: #9e050d;  /* Penn red */
-    --white: #ffffff;
-    --light-gray: #f5f5f5;
-    --border-color: #dddddd;
-    --text-color: #333333;  /* Dark text for better readability */
-  }
-
-  body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--light-gray);
-    margin: 0;
-    padding: 0;
-  }
-
-  main {
-    margin: 30px auto;
-    padding: 0 20px;
-    max-width: 1200px;
-  }
-
-  h2 {
-    text-align: center;
-    color: var(--dark-color);
-    margin-bottom: 30px;
-    font-size: 2rem;
-  }
-
-  .form-container {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    margin-bottom: 50px;
-  }
-
-  .flash-messages {
-    margin-bottom: 20px;
-  }
-
-  .flash-message {
-    padding: 10px 15px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .full-width {
-    flex-direction: column;
-  }
-
-  label {
-    margin-bottom: 8px;
+/* Secondary Button */
+.secondary-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text-dark);
     font-weight: 600;
-    color: var(--secondary-color);
-  }
-
-  input, select, textarea {
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    font-size: 16px;
-    font-family: inherit;
-  }
-
-  textarea {
-    resize: vertical;
-    min-height: 100px;
-  }
-
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(126, 178, 221, 0.3);
-  }
-
-  button {
-    background-color: var(--secondary-color);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 5px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 30px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-  }
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  margin-left: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-  button:hover {
-    background-color: var(--dark-color);
-  }
+.secondary-button:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
 
-  small {
-    font-size: 12px;
-    color: #666;
-    margin-top: 5px;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 992px) {
-    .form-row.three-column {
-      grid-template-columns: 1fr 1fr;
-    }
-    
-    .form-container {
-      padding: 20px;
-    }
-    
-    main {
-      padding: 0 15px;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .form-row.three-column,
-    .form-row.two-column {
-      grid-template-columns: 1fr;
-    }
-  }
-  
-  /* Select2 styling with compact layout */
-  .select2-container--default .select2-selection--multiple {
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    min-height: 44px;
-    padding: 4px;
-    background-color: #fdfdfd;
-    display: flex !important;
-    flex-wrap: wrap !important;
-  }
-
-  .select2-container--default.select2-container--focus .select2-selection--multiple {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(126, 178, 221, 0.3);
-  }
-
-  /* Selection tags */
-  .select2-container--default .select2-selection--multiple .select2-selection__rendered {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: 100% !important;
-    gap: 4px !important;
-  }
-
-  /* Tag styling */
-  .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: var(--secondary-color) !important;
-    color: white !important;
-    border: none !important;
-    padding: 6px 12px !important;
-    border-radius: 20px !important;
-    margin: 2px !important;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
-    display: inline-flex !important;
-    align-items: center !important;
-  }
-
-  /* Remove button styling */
-  .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-    color: white !important;
-    margin-right: 6px !important;
-    padding: 0 5px !important; 
-    border-right: 1px solid rgba(255,255,255,0.3) !important;
-    font-weight: bold !important;
-  }
-
-  .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
-    background-color: rgba(255,255,255,0.2) !important;
-    color: white !important;
-    border-radius: 10px 0 0 10px !important;
-  }
-
-  /* Dropdown styling */
-  .select2-dropdown {
-    border: 1px solid var(--accent-color);
-    border-radius: 5px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-    background-color: white;
-    margin-top: 2px;
-  }
-
-  .select2-container--default .select2-results__option {
-    padding: 8px 12px;
-    color: #333;
-    font-weight: 500;
-    transition: background-color 0.2s;
-  }
-
-  .select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: var(--secondary-color);
-    color: white;
-  }
-
-  .select2-container--default .select2-results__option[aria-selected=true] {
-    background-color: #f0f0f0;
-    color: var(--secondary-color);
-    font-weight: 600;
-  }
-
-  .select2-container--default .select2-search--dropdown .select2-search__field {
-    border: 1px solid var(--accent-color);
-    border-radius: 4px;
-    padding: 8px;
-    font-size: 14px;
-    color: #333;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05) inset;
-  }
-
-  .amenities-select {
-    width: 100%;
-  }
-
-  /* File upload styling */
+/* File Upload Styling */
   .file-upload-container {
-    border: 2px dashed var(--border-color);
-    border-radius: 8px;
+  border: 2px dashed var(--accent-color);
+  border-radius: 12px;
     padding: 20px;
     text-align: center;
-    transition: border-color 0.3s;
-    background-color: var(--light-gray);
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.15);
   }
 
   .file-upload-container:hover {
-    border-color: var(--accent-color);
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   }
 
   .file-upload {
@@ -398,26 +242,43 @@
 
   .file-upload-info p {
     margin: 5px 0;
-    font-size: 12px;
-    color: #666;
-  }
-  
-  /* Image preview styles */
+  font-size: 13px;
+  color: var(--text-dark);
+  opacity: 0.8;
+}
+
+/* Form Hint */
+.form-hint {
+  font-size: 13px;
+  color: var(--text-dark);
+  margin-top: 6px;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Image Preview Styles */
   .image-preview {
     margin-top: 15px;
     width: 100%;
     height: 200px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 2px solid var(--accent-color);
     display: none;
     overflow: hidden;
     position: relative;
+  transition: all 0.3s ease;
   }
 
   .image-preview img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.image-preview:hover img {
+  transform: scale(1.03);
   }
 
   .images-preview-container {
@@ -430,87 +291,126 @@
   .preview-thumbnail {
     width: 100px;
     height: 100px;
-    border-radius: 5px;
+  border-radius: 8px;
     overflow: hidden;
     border: 2px solid var(--accent-color);
+  transition: all 0.3s ease;
+}
+
+.preview-thumbnail:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
 
   .preview-thumbnail img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
+  transition: transform 0.3s ease;
+}
 
-  /* Verified tenants textarea and hint */
-  .form-hint {
-    font-size: 12px;
-    color: #555;
-    margin-top: 6px;
-    font-style: italic;
-  }
+.preview-thumbnail:hover img {
+  transform: scale(1.1);
+}
 
-  textarea[name="verified_tenants"] {
-    font-family: 'Segoe UI', sans-serif;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    resize: vertical;
-    min-height: 80px;
-  }
+/* Select2 Styling */
+.select2-container--default .select2-selection--multiple {
+  border: 2px solid var(--accent-color) !important;
+  border-radius: 10px !important;
+  min-height: 48px !important;
+  padding: 6px !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  overflow: hidden !important;
+}
 
-  textarea[name="verified_tenants"]:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(126, 178, 221, 0.2);
-  }
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(0, 207, 255, 0.3) !important;
+}
 
-  /* Custom styles for Select2 amenities tags */
-  .amenity-option {
-    display: flex;
-    align-items: center;
-    color: var(--text-color);
-    font-weight: 500;
-  }
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color: var(--primary-color) !important;
+  color: black !important; /* Ensure this is set */
+  font-weight: 500 !important;
+  border: 2px solid var(--accent-color) !important;
+  padding: 6px 12px !important;
+  border-radius: 20px !important;
+  font-size: 14px !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+}
 
-  .amenity-tag {
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-weight: 500;
-    display: inline-block;
-    white-space: nowrap;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
-  }
 
-  /* Custom styling for the Select2 dropdown container */
-  .amenities-dropdown .select2-results__options {
-    max-height: 300px;
-    overflow-y: auto;
-    padding: 8px;
-  }
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+  color: white !important;
+  margin-right: 6px !important;
+  padding: 0 5px !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.3) !important;
+  font-weight: bold !important;
+}
 
-  /* Make sure the select2 container has adequate spacing */
-  .select2-container {
-    margin-bottom: 5px;
-    width: 100% !important;
-  }
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: black !important;
+  border-radius: 10px 0 0 10px !important;
+}
 
-  /* Styles for edit apartment page */
+.select2-dropdown {
+  border: 1px solid var(--primary-color) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15) !important;
+  background-color: white !important;
+  margin-top: 2px !important;
+  overflow: hidden !important;
+}
+
+.select2-container--default .select2-results__option {
+  padding: 10px 15px !important;
+  color: var(--text-dark) !important;
+  font-weight: 500 !important;
+  transition: background-color 0.2s !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+  background-color: rgba(0, 207, 255, 0.1) !important;
+  color: var(--primary-color) !important;
+  font-weight: 600 !important;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+  border: 1px solid var(--primary-color) !important;
+  border-radius: 8px !important;
+  padding: 10px !important;
+  font-size: 14px !important;
+  color: var(--text-dark) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset !important;
+}
+
+/* Current Images Display for Edit Page */
   .current-images {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 15px;
+  border-radius: 12px;
     margin-bottom: 20px;
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #eaeaea;
+  border: 2px solid var(--accent-color);
+  transition: background-color 0.3s ease;
+}
+
+.current-images:hover {
+  background: rgba(255, 255, 255, 0.25);
   }
 
   .current-images h3 {
     font-size: 16px;
     margin-top: 15px;
     margin-bottom: 10px;
-    color: var(--secondary-color);
+  color: var(--primary-color);
     font-weight: 600;
   }
 
@@ -518,17 +418,18 @@
     width: 120px;
     height: 90px;
     object-fit: cover;
-    border-radius: 6px;
+  border-radius: 8px;
     margin-right: 10px;
     margin-bottom: 10px;
-    border: 2px solid #eaeaea;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
   }
 
   .thumbnail:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary-color);
   }
 
   .thumbnails {
@@ -537,135 +438,98 @@
     margin-top: 10px;
   }
 
-  .secondary-button {
-    background: #f0f0f0;
-    color: #444;
-    font-weight: bold;
-    padding: 0.9rem 1.5rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-    margin-left: 10px;
-  }
-
-  .secondary-button:hover {
-    background: #ddd;
-  }
-
+/* Checkbox Styling */
   .checkbox-group {
     display: flex;
     align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 12px;
+  border-radius: 10px;
+  border: 2px solid var(--accent-color);
+  transition: background-color 0.3s ease;
+}
+
+.checkbox-group:hover {
+  background: rgba(255, 255, 255, 0.25);
   }
 
   .checkbox-group input[type="checkbox"] {
     width: auto;
     margin-right: 10px;
+  cursor: pointer;
   }
 
   .checkbox-group label {
     display: flex;
     align-items: center;
     cursor: pointer;
-  }
-
-  .checkbox-label {
-    display: flex !important;
-    align-items: center;
-    font-weight: normal;
     margin-bottom: 0;
+  font-weight: 500;
   }
 
+/* Last Form Row Styling */
   .form-row:last-child {
-    margin-top: 20px;
+  margin-top: 30px;
     justify-content: center;
+  gap: 10px;
   }
 
-  /* Make sure the button and cancel link are properly aligned */
   .form-row:last-child > * {
     align-self: center;
-  }
+  margin: 0 5px;
+}
 
-  /* Select2 Dropdown Styles */
-  .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: #445e93 !important;
-    color: white !important;
-    border: none !important;
-    padding: 6px 10px !important;
-    border-radius: 20px !important;
-    margin: 4px !important;
-    font-size: 14px !important;
-    box-shadow: 0 2px 3px rgba(0,0,0,0.1) !important;
-    font-weight: 500 !important;
-    display: inline-block !important;
-    float: left !important;
-  }
+/* Button Styling - Create/Update Listing */
+button[type="submit"] {
+  background-color: var(--accent-color);
+}
 
-  .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-    color: white !important;
-    padding: 0 5px !important;
-    border-right: 1px solid rgba(255,255,255,0.3) !important;
-    margin-right: 6px !important;
-  }
+button[type="submit"]:hover {
+  background-color: var(--primary-color);
+}
 
-  .select2-container--default .select2-selection--multiple {
-    min-height: 44px !important;
-    padding: 4px !important;
-    height: auto !important;
-    line-height: 1.5 !important;
+/* Responsive design */
+@media (max-width: 992px) {
+  .form-row.three-column {
+    grid-template-columns: 1fr 1fr;
   }
-
-  /* Fix specific spacing issues */
-  .select2-container--default .select2-selection--multiple .select2-selection__rendered {
-    display: block !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    line-height: 1.5 !important;
+  
+  .form-container {
+    padding: 1.5rem;
   }
-
-  /* Make tags flow horizontally with minimal space */
-  .select2-container--default .select2-selection--multiple .select2-selection__rendered li {
-    line-height: 1.5 !important;
-    margin-bottom: 2px !important;
+  
+  main {
+    padding: 0 15px;
   }
-
-  /* Hide this element that's causing extra space */
-  .select2-container--default .select2-selection--multiple .select2-selection__clear {
-    display: none !important;
+  
+  main h2 {
+    font-size: 1.8rem;
+    padding: 10px 20px;
   }
+}
 
-  /* Current images display for EditApartment.html */
-  .current-images {
-    margin-bottom: 20px;
+@media (max-width: 768px) {
+  .form-row.three-column,
+  .form-row.two-column {
+    grid-template-columns: 1fr;
   }
-
-  .current-images h3 {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #445e93;
+  
+  .form-container {
+    padding: 1rem;
+  }
+  
+  main h2 {
+    font-size: 1.6rem;
+    width: 90%;
   }
 
   .thumbnail {
-    width: 120px;
-    height: 90px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    border: 2px solid #eaeaea;
+    width: 100px;
+    height: 75px;
+  }
+  
+  .file-upload-container {
+    padding: 15px;
   }
 
-  .thumbnails {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  /* Update Listing button style */
-  button[type="submit"] {
-    background-color: #4caf50;
-  }
+}
