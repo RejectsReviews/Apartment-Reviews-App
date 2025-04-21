@@ -6,7 +6,7 @@ services:
   plan: free
   branch: main
   buildCommand: "pip install -r requirements.txt && python -m flask db init || true && python -m flask db migrate || true && python -m flask db upgrade"
-  startCommand: "gunicorn -c gunicorn_config.py 'App.main:create_app()'"
+  startCommand: "gunicorn -c gunicorn_config.py wsgi:app"
   envVars:
   - key: FLASK_APP
     value: App/main.py
@@ -18,7 +18,7 @@ services:
     fromDatabase:
       name: apartment-reviews-db
       property: connectionString
-      append: "?sslmode=require"
+      append: "?sslmode=disable"
   - key: POSTGRES_URL
     fromDatabase:
       name: apartment-reviews-db
@@ -36,7 +36,11 @@ services:
       name: apartment-reviews-db
       property: database
   - key: SSL_MODE
-    value: require
+    value: disable
+  - key: USE_SQLITE_FALLBACK
+    value: true
+  - key: PGSSLMODE
+    value: disable
 
 envVarGroups:
 - name: flask-postgres-api-settings
