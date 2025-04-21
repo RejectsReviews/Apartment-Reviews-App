@@ -3,7 +3,11 @@ from flask_jwt_extended import jwt_required, current_user
 import os
 from werkzeug.utils import secure_filename
 
-from App.controllers import get_all_apartments, add_amenity_to_apartment
+from App.controllers import (
+    get_all_apartments, 
+    add_amenity_to_apartment,
+    get_reviews_by_apartment
+)
 
 apartment_views = Blueprint('apartment_views', __name__, template_folder='../templates')
 
@@ -124,10 +128,12 @@ def apartment_details(apartment_id):
     additional_images = get_apartment_images(apartment_id, 'additional')
     
     landlord = get_landlord(apartment.landlord_id)
+    reviews = get_reviews_by_apartment(apartment_id)
     
     return render_template('Html/ListingDetails.html', 
                           apartment=apartment,
                           cover_image=cover_image,
                           additional_images=additional_images,
                           landlord=landlord,
-                          is_tenant=(current_user.user_type == 'Tenant')) 
+                          reviews=reviews,
+                          is_tenant=(current_user.user_type == 'Tenant'))
