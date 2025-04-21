@@ -37,8 +37,21 @@
 
   <!-- Search Bar -->
   <div class="search-container">
-    <input type="text" class="search-bar" placeholder="Search apartments by location or amenities...">
-    <button type="submit" class="search-button">Search</button>
+    <form id="search-form" action="{{ url_for('apartment_views.apartments_listing') }}" method="GET" class="search-group">
+      <input type="text" name="location" class="search-bar" placeholder="Search by location..." value="{{ request.args.get('location', '') }}">
+      <select name="amenity" class="amenities-filter" onchange="this.form.submit()">
+        <option value="">Filter by Amenity</option>
+        <option value="WiFi" {% if request.args.get('amenity') == 'WiFi' %}selected{% endif %}>WiFi</option>
+        <option value="Parking" {% if request.args.get('amenity') == 'Parking' %}selected{% endif %}>Parking</option>
+        <option value="Air Conditioning" {% if request.args.get('amenity') == 'Air Conditioning' %}selected{% endif %}>Air Conditioning</option>
+        <option value="Laundry" {% if request.args.get('amenity') == 'Laundry' %}selected{% endif %}>Laundry</option>
+        <option value="Gym" {% if request.args.get('amenity') == 'Gym' %}selected{% endif %}>Gym</option>
+        <option value="Pool" {% if request.args.get('amenity') == 'Pool' %}selected{% endif %}>Pool</option>
+        <option value="Security" {% if request.args.get('amenity') == 'Security' %}selected{% endif %}>Security</option>
+        <option value="Furnished" {% if request.args.get('amenity') == 'Furnished' %}selected{% endif %}>Furnished</option>
+      </select>
+      <button type="submit" class="search-button">Search</button>
+    </form>
   </div>
 
   <!-- Main Listings Content -->

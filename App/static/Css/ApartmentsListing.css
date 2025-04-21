@@ -1,5 +1,4 @@
 /* ApartmentsListing.css */
-
 :root {
   --primary-color: #fa898d;  
   --secondary-color: #445e93;  
@@ -28,14 +27,36 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.search-group {
+  display: flex;
+  align-items: center;
+  max-width: 800px;
+  width: 100%;
+}
+
 .search-bar {
-  width: 60%;
-  max-width: 600px;
+  flex: 2;
   padding: 12px 20px;
   border: 1px solid #ddd;
   border-radius: 25px 0 0 25px;
   font-size: 16px;
   outline: none;
+}
+
+.amenities-filter {
+  flex: 1;
+  padding: 12px 20px;
+  border: 1px solid #ddd;
+  border-left: none;
+  font-size: 16px;
+  outline: none;
+  background-color: white;
+  color: var(--dark-gray);
+  cursor: pointer;
+}
+
+.amenities-filter:focus {
+  border-color: var(--accent-color);
 }
 
 .search-button {
@@ -137,6 +158,23 @@ body {
   
   .search-bar {
     width: 70%;
+  }
+
+  .search-group {
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 15px;
+  }
+
+  .search-bar,
+  .amenities-filter,
+  .search-button {
+    width: 100%;
+    border-radius: 25px;
+  }
+
+  .amenities-filter {
+    border: 1px solid #ddd;
   }
 }
 
@@ -244,4 +282,4 @@ body {
 
 .dot.active {
   background-color: white;
-} 
+}
