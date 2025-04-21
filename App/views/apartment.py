@@ -159,3 +159,19 @@ def apartment_details(apartment_id):
                           landlord=landlord,
                           reviews=reviews,
                           is_tenant=(current_user.user_type == 'Tenant'))
+
+@apartment_views.route('/api/locations', methods=['GET'])
+@jwt_required()
+def get_locations():
+    query = request.args.get('query', '').lower()
+    apartments = get_all_apartments()
+    
+    # Get unique locations (both cities and addresses)
+    locations = set()
+    for apartment in apartments:
+        if apartment.city and query in apartment.city.lower():
+            locations.add(apartment.city)
+        if apartment.address and query in apartment.address.lower():
+            locations.add(apartment.address)
+    
+    return jsonify(list(sorted(locations)))
