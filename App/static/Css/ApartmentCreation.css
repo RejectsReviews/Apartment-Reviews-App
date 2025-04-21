@@ -347,4 +347,27 @@
     height: 100%;
     object-fit: cover;
   }
-  
+
+  /* Verified tenants textarea and hint */
+  .form-hint {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  textarea[name="verified_tenants"] {
+    font-family: 'Segoe UI', sans-serif;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  textarea[name="verified_tenants"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(126, 178, 221, 0.2);
+  }

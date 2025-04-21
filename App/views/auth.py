@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
 from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies
-
-from App.models import User
+from App.database import db
+from App.models import User, Tenant
 from.index import index_views
 
 from App.controllers import (
@@ -46,6 +46,20 @@ def signup_action():
         flash('Passwords do not match'), 400
         return redirect(url_for('auth_views.signup_page'))
     
+    # Validate phone number
+    phone = data.get('phone', '').strip()
+    if not phone.isdigit() or len(phone) != 10:
+        flash('Phone number must be exactly 10 digits'), 400
+        return redirect(url_for('auth_views.signup_page'))
+    
+    # Check for existing phone number
+    if data['user_type'] == 'Tenant':
+        existing_tenant = db.session.query(Tenant).filter(Tenant.phone == phone).first()
+        if existing_tenant:
+            flash('An account with this phone number already exists'), 400
+            return redirect(url_for('auth_views.signup_page'))
+    
+    # Check for existing username or email
     user = User.query.filter((User.username == data['username']) | (User.email == data['email'])).first()
     if user:
         flash('Username or email already exists'), 400
@@ -53,33 +67,34 @@ def signup_action():
     
     try:
         if data['user_type'] == 'Tenant':
-            signup_tenant(
+            user = signup_tenant(
                 username=data['username'],
                 password=data['password'],
                 email=data['email'],
                 first_name=data['first_name'],
                 last_name=data['last_name'],
-                phone=data['phone'],
+                phone=phone,
                 address=data.get('address', ''),
                 city=data.get('city', ''),
                 state=data.get('state', '')
             )
-        elif data['user_type'] == 'Landlord':
-            signup_landlord(
+        else:
+            user = signup_landlord(
                 username=data['username'],
                 password=data['password'],
                 email=data['email'],
                 first_name=data['first_name'],
                 last_name=data['last_name']
             )
-        else:
-            flash('Invalid user type'), 400
-            return redirect(url_for('auth_views.signup_page'))
             
-        flash('Account created successfully! Please login.')
-        return redirect(url_for('auth_views.login_page'))
+        if user:
+            flash('Account created successfully!')
+            return redirect(url_for('auth_views.login_page'))
+        else:
+            flash('Error creating account'), 400
+            return redirect(url_for('auth_views.signup_page'))
     except Exception as e:
-        flash(f'Error creating account: {str(e)}'), 500
+        flash(f'Error: {str(e)}'), 400
         return redirect(url_for('auth_views.signup_page'))
 
 @auth_views.route('/login', methods=['POST'])
@@ -87,12 +102,12 @@ def login_action():
     data = request.form
     token = login(data['username'], data['password'])
     if not token:
-        flash('Bad username or password given'), 401
+        flash('Invalid username or password'), 401
         return redirect(url_for('auth_views.login_page'))
     else:
-        flash('Login Successful')
-        response = redirect(url_for('apartment_views.apartments_listing'))
-        set_access_cookies(response, token) 
+        response = redirect(url_for('index_views.index_page'))
+        set_access_cookies(response, token)
+        flash('Logged in successfully!')
         return response
 
 @auth_views.route('/logout', methods=['GET'])
@@ -108,13 +123,13 @@ API Routes
 
 @auth_views.route('/api/login', methods=['POST'])
 def user_login_api():
-  data = request.json
-  token = login(data['username'], data['password'])
-  if not token:
-    return jsonify(message='bad username or password given'), 401
-  response = jsonify(access_token=token) 
-  set_access_cookies(response, token)
-  return response
+    data = request.json
+    token = login(data['username'], data['password'])
+    if not token:
+        return jsonify({"error": "Invalid username or password"}), 401
+    response = jsonify(access_token=token) 
+    set_access_cookies(response, token)
+    return response
 
 @auth_views.route('/api/identify', methods=['GET'])
 @jwt_required()

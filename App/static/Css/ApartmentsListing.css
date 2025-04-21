@@ -1,5 +1,4 @@
 /* ApartmentsListing.css */
-
 :root {
   --primary-color: #fa898d;  
   --secondary-color: #445e93;  
@@ -28,14 +27,37 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.search-group {
+  display: flex;
+  align-items: center;
+  max-width: 800px;
+  width: 100%;
+  position: relative;
+}
+
 .search-bar {
-  width: 60%;
-  max-width: 600px;
+  flex: 2;
   padding: 12px 20px;
   border: 1px solid #ddd;
   border-radius: 25px 0 0 25px;
   font-size: 16px;
   outline: none;
+}
+
+.amenities-filter {
+  flex: 1;
+  padding: 12px 20px;
+  border: 1px solid #ddd;
+  border-left: none;
+  font-size: 16px;
+  outline: none;
+  background-color: white;
+  color: var(--dark-gray);
+  cursor: pointer;
+}
+
+.amenities-filter:focus {
+  border-color: var(--accent-color);
 }
 
 .search-button {
@@ -53,6 +75,32 @@ body {
   background-color: var(--dark-color);
 }
 
+/* Location Dropdown Styling */
+.location-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 60%;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: var(--light-gray);
+}
+
 /* Apartments Grid */
 .apartments-grid {
   display: grid;
@@ -68,6 +116,7 @@ body {
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
 }
 
 .apartment-card:hover {
@@ -137,6 +186,23 @@ body {
   
   .search-bar {
     width: 70%;
+  }
+
+  .search-group {
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 15px;
+  }
+
+  .search-bar,
+  .amenities-filter,
+  .search-button {
+    width: 100%;
+    border-radius: 25px;
+  }
+
+  .amenities-filter {
+    border: 1px solid #ddd;
   }
 }
 
@@ -244,4 +310,68 @@ body {
 
 .dot.active {
   background-color: white;
-} 
+}
+
+.save-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.save-button:hover {
+  transform: scale(1.1);
+}
+
+.save-button i {
+  font-size: 18px;
+  color: var(--primary-color);
+}
+
+.save-button.saved i {
+  color: var(--primary-color);
+}
+
+/* Heart button styling */
+.heart-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.heart-button:hover {
+  transform: scale(1.1);
+}
+
+.heart-button i {
+  font-size: 18px;
+  color: #ccc;
+  transition: color 0.2s ease;
+}
+
+.heart-button.saved i {
+  color: #fa898d;
+}

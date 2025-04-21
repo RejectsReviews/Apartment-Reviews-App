@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Apartment Listings</title>
+  <title>Saved Apartments</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/landLordNav.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/ApartmentsListing.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/footer.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <script src="{{ url_for('static', filename='Javascript/ApartmentListing.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='Javascript/SavedApartments.js') }}" defer></script>
 </head>
 <body>
-
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-container">
@@ -23,53 +22,24 @@
       <ul class="nav-links">
         <li><a href="{{ url_for('index_views.index_page') }}">Home</a></li>
         <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
-        {% if not is_tenant %}
-        <!-- Landlord-specific options -->
-        <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
-        <li><a href="#">My Properties</a></li>
-        {% else %}
-        <!-- Tenant-specific options -->
         <li><a href="#">My Reviews</a></li>
-        <li><a href="{{ url_for('apartment_views.saved_apartments') }}">Saved Apartments</a></li>
-        {% endif %}
+        <li><a href="{{ url_for('apartment_views.saved_apartments') }}" class="active">Saved Apartments</a></li>
         <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
       </ul>
     </div>
   </nav>
-
-  <!-- Search Bar -->
-  <div class="search-container">
-    <form id="search-form" action="{{ url_for('apartment_views.apartments_listing') }}" method="GET" class="search-group">
-      <input type="text" name="location" class="search-bar" placeholder="Search by location..." value="{{ request.args.get('location', '') }}">
-      <select name="amenity" class="amenities-filter">
-        <option value="">Filter by Amenity</option>
-        <option value="WiFi" {% if request.args.get('amenity') == 'WiFi' %}selected{% endif %}>WiFi</option>
-        <option value="Parking" {% if request.args.get('amenity') == 'Parking' %}selected{% endif %}>Parking</option>
-        <option value="Air Conditioning" {% if request.args.get('amenity') == 'Air Conditioning' %}selected{% endif %}>Air Conditioning</option>
-        <option value="Laundry" {% if request.args.get('amenity') == 'Laundry' %}selected{% endif %}>Laundry</option>
-        <option value="Gym" {% if request.args.get('amenity') == 'Gym' %}selected{% endif %}>Gym</option>
-        <option value="Pool" {% if request.args.get('amenity') == 'Pool' %}selected{% endif %}>Pool</option>
-        <option value="Security" {% if request.args.get('amenity') == 'Security' %}selected{% endif %}>Security</option>
-        <option value="Furnished" {% if request.args.get('amenity') == 'Furnished' %}selected{% endif %}>Furnished</option>
-      </select>
-      <button type="submit" class="search-button">Search</button>
-    </form>
-  </div>
 
   <!-- Main Listings Content -->
   <main class="apartments-grid">
     {% if apartments %}
       {% for apartment in apartments %}
       <div class="apartment-card">
-        {% if is_tenant %}
-        <button class="save-button {% if apartment in current_user.saved_apartments %}saved{% endif %}" 
+        <button class="save-button saved" 
                 data-apartment-id="{{ apartment.id }}"
-                title="{% if apartment in current_user.saved_apartments %}Remove from saved{% else %}Save apartment{% endif %}">
-          <i class="{% if apartment in current_user.saved_apartments %}fas{% else %}far{% endif %} fa-heart"></i>
+                title="Remove from saved">
+          <i class="fas fa-heart"></i>
         </button>
-        {% endif %}
         <div class="image-slideshow">
-          <!-- Check if apartment has a cover image -->
           {% set cover_image = get_apartment_images(apartment.id, 'cover') %}
           {% if cover_image %}
             <img src="{{ url_for('static', filename='images/apartments/' + apartment.id|string + '/' + cover_image) }}" alt="{{ apartment.title }}" class="apartment-image">
@@ -98,7 +68,8 @@
       {% endfor %}
     {% else %}
       <div class="no-apartments">
-        <p>No apartments available at this time.</p>
+        <p>You haven't saved any apartments yet.</p>
+        <a href="{{ url_for('apartment_views.apartments_listing') }}" class="view-details">Browse Listings</a>
       </div>
     {% endif %}
   </main>
@@ -107,8 +78,5 @@
   <footer class="footer">
     <p>&copy; 2025 Apartment Reviews. All rights reserved.</p>
   </footer>
-
-  <!-- Include the slideshow.js script -->
-  <script src="{{ url_for('static', filename='js/slideshow.js') }}"></script>
 </body>
 </html>

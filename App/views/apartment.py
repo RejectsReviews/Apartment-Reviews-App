@@ -1,9 +1,17 @@
 from flask import Blueprint, render_template, jsonify, request, flash, redirect, url_for, current_app
 from flask_jwt_extended import jwt_required, current_user
+from App.database import db
 import os
 from werkzeug.utils import secure_filename
 
-from App.controllers import get_all_apartments, add_amenity_to_apartment
+from App.controllers import (
+    get_all_apartments, 
+    add_amenity_to_apartment,
+    get_reviews_by_apartment,
+    get_apartment,
+    save_apartment_for_tenant,
+    unsave_apartment_for_tenant
+)
 
 apartment_views = Blueprint('apartment_views', __name__, template_folder='../templates')
 
@@ -40,10 +48,32 @@ def register_template_utils(state):
 @apartment_views.route('/apartments', methods=['GET'])
 @jwt_required()
 def apartments_listing():
+    amenity = request.args.get('amenity')
+    location = request.args.get('location')
+    
     apartments = get_all_apartments()
+    
+    if amenity:
+        # Filter apartments that have the selected amenity
+        filtered_apartments = []
+        for apartment in apartments:
+            if any(a.name == amenity for a in apartment.amenities):
+                filtered_apartments.append(apartment)
+        apartments = filtered_apartments
+    
+    if location:
+        # Filter by location (city or address)
+        location = location.lower()
+        filtered_apartments = []
+        for apartment in apartments:
+            if (location in apartment.city.lower() or 
+                location in apartment.address.lower()):
+                filtered_apartments.append(apartment)
+        apartments = filtered_apartments
+
     return render_template('Html/ApartmentsListing.html', 
-                          apartments=apartments,
-                          is_tenant=(current_user.user_type == 'Tenant'))
+                         apartments=apartments,
+                         is_tenant=(current_user.user_type == 'Tenant'))
 
 @apartment_views.route('/apartments/create', methods=['GET'])
 @jwt_required()
@@ -65,6 +95,8 @@ def create_apartment_action():
         from App.controllers.apartment import create_apartment
         from App.controllers.amenity import get_or_create_amenity
         
+        verified_tenants = data.get('verified_tenants', '').strip()
+        
         new_apartment = create_apartment(
             landlord_id=current_user.id,
             title=data['title'],
@@ -73,7 +105,8 @@ def create_apartment_action():
             city=data['city'],
             price=float(data['price']),
             bedrooms=int(data['bedrooms']),
-            bathrooms=int(data['bathrooms'])
+            bathrooms=int(data['bathrooms']),
+            verified_tenants=verified_tenants
         )
         
         if not new_apartment:
@@ -124,10 +157,71 @@ def apartment_details(apartment_id):
     additional_images = get_apartment_images(apartment_id, 'additional')
     
     landlord = get_landlord(apartment.landlord_id)
+    reviews = get_reviews_by_apartment(apartment_id)
     
     return render_template('Html/ListingDetails.html', 
                           apartment=apartment,
                           cover_image=cover_image,
                           additional_images=additional_images,
                           landlord=landlord,
-                          is_tenant=(current_user.user_type == 'Tenant')) 
+                          reviews=reviews,
+                          is_tenant=(current_user.user_type == 'Tenant'))
+
+@apartment_views.route('/api/locations', methods=['GET'])
+@jwt_required()
+def get_locations():
+    query = request.args.get('query', '').lower()
+    apartments = get_all_apartments()
+    
+    # Get unique locations (both cities and addresses)
+    locations = set()
+    for apartment in apartments:
+        if apartment.city and query in apartment.city.lower():
+            locations.add(apartment.city)
+        if apartment.address and query in apartment.address.lower():
+            locations.add(apartment.address)
+    
+    return jsonify(list(sorted(locations)))
+
+@apartment_views.route('/apartments/<int:apartment_id>/save', methods=['POST'])
+@jwt_required()
+def save_apartment(apartment_id):
+    if current_user.user_type != 'Tenant':
+        return jsonify({'error': 'Only tenants can save apartments'}), 403
+    
+    apartment = get_apartment(apartment_id)
+    if not apartment:
+        return jsonify({'error': 'Apartment not found'}), 404
+        
+    if apartment not in current_user.saved_apartments:
+        current_user.saved_apartments.append(apartment)
+        db.session.commit()
+    
+    return jsonify({'message': 'Apartment saved successfully'})
+
+@apartment_views.route('/apartments/<int:apartment_id>/unsave', methods=['POST'])
+@jwt_required()
+def unsave_apartment(apartment_id):
+    if current_user.user_type != 'Tenant':
+        return jsonify({'error': 'Only tenants can unsave apartments'}), 403
+    
+    apartment = get_apartment(apartment_id)
+    if not apartment:
+        return jsonify({'error': 'Apartment not found'}), 404
+        
+    if apartment in current_user.saved_apartments:
+        current_user.saved_apartments.remove(apartment)
+        db.session.commit()
+    
+    return jsonify({'message': 'Apartment removed from saved'})
+
+@apartment_views.route('/saved-apartments', methods=['GET'])
+@jwt_required()
+def saved_apartments():
+    if current_user.user_type != 'Tenant':
+        flash('Only tenants can access saved apartments')
+        return redirect(url_for('apartment_views.apartments_listing'))
+        
+    return render_template('Html/ApartmentsListing.html', 
+                         apartments=current_user.saved_apartments,
+                         is_tenant=True)

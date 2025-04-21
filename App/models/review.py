@@ -9,6 +9,10 @@ class Review(db.Model):
     comment = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=db.func.now())
 
+    __table_args__ = (
+        db.UniqueConstraint('apartment_id', 'tenant_id', name='unique_tenant_review'),
+    )
+
     def __init__(self, apartment_id, tenant_id, rating, comment, landlord_id=None):
         self.apartment_id = apartment_id
         self.tenant_id = tenant_id
@@ -47,8 +51,8 @@ class Review(db.Model):
     
     def get_review_by_tenant_id_json(tenant_id):
         return [review.get_json() for review in Review.query.filter_by(tenant_id=tenant_id).all()]
-    
-    
-    
-        
-    
+
+
+
+
+
