@@ -37,7 +37,7 @@
   <div class="login-container">
     <div class="login-card">
       <h2>Login</h2>
-      {% with messages = get_flashed_messages() %}
+      {% with messages = get_flashed_messages(category_filter=['auth_error', 'auth_success']) %}
         {% if messages %}
           <div class="flash-messages">
             {% for message in messages %}

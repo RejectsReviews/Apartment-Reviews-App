@@ -7,13 +7,14 @@ class Apartment(db.Model):
     description = db.Column(db.Text, nullable=True)
     address = db.Column(db.String(200), nullable=False)
     city = db.Column(db.String(120), nullable=False)
-    price = db.Column(db.Float, nullable=False)
+    price = db.Column(db.Integer, nullable=False)
     bedrooms = db.Column(db.Integer, nullable=False)
     bathrooms = db.Column(db.Integer, nullable=False)
-    verified_tenants = db.Column(db.Text, nullable=True)  # Store tenant numbers as comma-separated string
+    verified_tenants = db.Column(db.Text, nullable=True) 
     created_at = db.Column(db.DateTime, default=db.func.now())
     amenities = db.relationship('Amenity', secondary='apartment_amenity', backref=db.backref('apartments', lazy='dynamic'))
     tenant_id = db.Column(db.Integer, db.ForeignKey('tenant.id'), nullable=True)
+    reviews = db.relationship('Review', backref='apartment', lazy='dynamic')
 
     def __init__(self, landlord_id, title, description, address, city, price, bedrooms, bathrooms, verified_tenants=None):
         self.landlord_id = landlord_id

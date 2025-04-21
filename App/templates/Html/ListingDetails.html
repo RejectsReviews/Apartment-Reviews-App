@@ -8,9 +8,11 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/landLordNav.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/footer.css') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
   <!-- Leaflet CSS and JS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
   <!-- JavaScript -->
   <script src="{{ url_for('static', filename='Javascript/ListingDetails.js') }}" defer></script>
 </head>
@@ -28,16 +30,21 @@
       <ul class="nav-links">
         <li><a href="{{ url_for('index_views.index_page') }}">Home</a></li>
         <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
-        {% if not is_tenant %}
-        <!-- Landlord-specific options -->
-        <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
-        <li><a href="#">My Properties</a></li>
+        {% if is_authenticated %}
+          {% if not is_tenant %}
+          <!-- Landlord-specific options -->
+          <li><a href="{{ url_for('apartment_views.create_apartment_page') }}">Create Listing</a></li>
+          <li><a href="#">My Properties</a></li>
+          {% else %}
+          <!-- Tenant-specific options -->
+          <li><a href="#">My Reviews</a></li>
+          <li><a href="{{ url_for('apartment_views.saved_apartments') }}">Saved Apartments</a></li>
+          {% endif %}
+          <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
         {% else %}
-        <!-- Tenant-specific options -->
-        <li><a href="#">My Reviews</a></li>
-        <li><a href="{{ url_for('apartment_views.saved_apartments') }}">Saved Apartments</a></li>
+          <li><a href="{{ url_for('auth_views.login_page') }}">Sign In</a></li>
+          <li><a href="{{ url_for('auth_views.signup_page') }}">Sign Up</a></li>
         {% endif %}
-        <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
       </ul>
     </div>
   </nav>
@@ -49,7 +56,7 @@
         <a href="{{ url_for('apartment_views.apartments_listing') }}" class="back-button">
           <i class="fas fa-arrow-left"></i> Back to Listings
         </a>
-        {% if is_tenant %}
+        {% if is_authenticated and is_tenant %}
         <button class="save-button {% if apartment in current_user.saved_apartments %}saved{% endif %}" 
                 data-apartment-id="{{ apartment.id }}"
                 title="{% if apartment in current_user.saved_apartments %}Remove from saved{% else %}Save apartment{% endif %}">
@@ -61,6 +68,26 @@
       <!-- Listing Images Card -->
       <div class="card">
         <h2>{{ apartment.title }}</h2>
+        
+        <!-- Average Rating Display -->
+        <div class="average-rating">
+          {% set avg_rating = apartment.id|get_average_rating %}
+          {% set review_count = apartment.id|get_reviews_count %}
+          
+          <div class="rating-stars">
+            {% for i in range(5) %}
+              {% if i < avg_rating|int %}
+                <i class="fas fa-star"></i>
+              {% elif i < avg_rating and avg_rating|int != avg_rating %}
+                <i class="fas fa-star-half-alt"></i>
+              {% else %}
+                <i class="far fa-star"></i>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <span class="rating-value">{{ avg_rating }} {% if review_count > 0 %}({{ review_count }} review{% if review_count > 1 %}s{% endif %}){% else %}(No reviews yet){% endif %}</span>
+        </div>
+        
         <div class="image-gallery">
           <div class="main-image">
             {% if cover_image %}
@@ -90,101 +117,111 @@
         </div>
       </div>
 
-      <!-- Apartment Details Card -->
-      <div class="card">
-        <div class="apartment-info-detailed">
-          <div class="info-row">
-            <div class="info-section">
-              <h3>Price</h3>
-              <p class="price">${{ apartment.price }}/month</p>
+      <!-- Two-column layout for details and reviews -->
+      <div class="two-column-layout">
+        <!-- Apartment Details Card -->
+        <div class="card main-column">
+          <div class="apartment-info-detailed">
+            <div class="info-row">
+              <div class="info-section">
+                <h3>Price</h3>
+                <p class="price">${{ apartment.price }}/month</p>
+              </div>
+              
+              <div class="info-section">
+                <h3>Details</h3>
+                <p><strong>Bedrooms:</strong> {{ apartment.bedrooms }}</p>
+                <p><strong>Bathrooms:</strong> {{ apartment.bathrooms }}</p>
+              </div>
+
+              <!-- Landlord Information -->
+              <div class="info-section">
+                <h3>Landlord</h3>
+                {% if landlord %}
+                  <p><strong>Name:</strong> {{ landlord.first_name }} {{ landlord.last_name }}</p>
+                  {% if is_authenticated and is_tenant %}
+                  <p><strong>Contact:</strong> {{ landlord.email }}</p>
+                  {% endif %}
+                {% else %}
+                  <p>Landlord information not available</p>
+                {% endif %}
+              </div>
             </div>
             
             <div class="info-section">
-              <h3>Details</h3>
-              <p><strong>Bedrooms:</strong> {{ apartment.bedrooms }}</p>
-              <p><strong>Bathrooms:</strong> {{ apartment.bathrooms }}</p>
+              <h3>Description</h3>
+              <p>{{ apartment.description }}</p>
             </div>
-
-            <!-- Landlord Information -->
+            
+            {% if apartment.amenities %}
             <div class="info-section">
-              <h3>Landlord</h3>
-              {% if landlord %}
-                <p><strong>Name:</strong> {{ landlord.first_name }} {{ landlord.last_name }}</p>
-                {% if is_tenant %}
-                <p><strong>Contact:</strong> {{ landlord.email }}</p>
-                {% endif %}
-              {% else %}
-                <p>Landlord information not available</p>
-              {% endif %}
-            </div>
-          </div>
-          
-          <div class="info-section">
-            <h3>Description</h3>
-            <p>{{ apartment.description }}</p>
-          </div>
-          
-          {% if apartment.amenities %}
-          <div class="info-section">
-            <h3>Amenities</h3>
-            <div class="amenities-list">
-              {% for amenity in apartment.amenities %}
-                <span class="amenity-tag">{{ amenity.name }}</span>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-          
-          <div class="location-section">
-            <h3>Location</h3>
-            <p>{{ apartment.address }}, {{ apartment.city }}</p>
-            <div id="map" class="map-container" data-address="{{ apartment.address }}, {{ apartment.city }}"></div>
-          </div>
-          
-          {% if is_tenant %}
-          <div class="action-section">
-            {% if apartment.verified_tenants and current_user.phone in apartment.verified_tenants.split('\n') %}
-              <a href="{{ url_for('review_views.leave_review', apartment_id=apartment.id) }}">
-                <button class="review-btn">Leave a Review</button>
-              </a>
-            {% else %}
-              <p class="review-notice">Only verified tenants can leave reviews for this apartment</p>
-            {% endif %}
-          </div>
-          {% endif %}
-        </div>
-      </div>
-
-      <!-- Reviews Card -->
-      <div class="card">
-        <h2><i class="fas fa-comments"></i> Reviews</h2>
-        <div class="review-search">
-          <input type="text" placeholder="Search review content..." />
-          <i class="fas fa-search"></i>
-        </div>
-
-        {% if reviews %}
-          {% for review in reviews %}
-          <div class="review-card">
-            <div class="review-header">
-              <span>{{ review.tenant.username }}</span>
-              <div class="review-stars">
-                {% for i in range(review.rating) %}
-                  <i class="fas fa-star"></i>
-                {% endfor %}
-                {% for i in range(5 - review.rating) %}
-                  <i class="far fa-star"></i>
+              <h3>Amenities</h3>
+              <div class="amenities-list">
+                {% for amenity in apartment.amenities %}
+                  <span class="amenity-tag">{{ amenity.name }}</span>
                 {% endfor %}
               </div>
             </div>
-            <p class="review-title">{{ review.comment.split('\n')[0] }}</p>
-            <p class="review-content">{{ review.comment.split('\n', 1)[1] if '\n' in review.comment else '' }}</p>
-            <div class="review-date">{{ review.created_at.strftime('%B %d, %Y') }}</div>
+            {% endif %}
+            
+            <div class="location-section">
+              <h3>Location</h3>
+              <p>{{ apartment.address }}, {{ apartment.city }}</p>
+              <div class="map-wrapper">
+                <div id="map" class="map-container" data-address="{{ apartment.address }}, {{ apartment.city }}"></div>
+                <button id="fullscreen-btn" class="map-fullscreen-btn" title="View in Full Screen">
+                  <i class="fas fa-expand"></i>
+                </button>
+              </div>
+            </div>
+            
+            {% if is_authenticated and is_tenant %}
+            <div class="action-section">
+              {% if apartment.verified_tenants and current_user.phone in apartment.verified_tenants.split('\n') %}
+                <a href="{{ url_for('review_views.leave_review', apartment_id=apartment.id) }}">
+                  <button class="review-btn">Leave a Review</button>
+                </a>
+              {% else %}
+                <p class="review-notice">Only verified tenants can leave reviews for this apartment</p>
+              {% endif %}
+            </div>
+            {% endif %}
           </div>
-          {% endfor %}
-        {% else %}
-          <p class="no-reviews">No reviews yet. Be the first to leave a review!</p>
-        {% endif %}
+        </div>
+
+        <!-- Reviews Card -->
+        <div class="card reviews-column">
+          <h2><i class="fas fa-comments"></i> Reviews</h2>
+          <div class="review-search">
+            <input type="text" placeholder="Search review content..." />
+            <i class="fas fa-search"></i>
+          </div>
+
+          <div class="reviews-container">
+            {% if reviews %}
+              {% for review in reviews %}
+              <div class="review-card">
+                <div class="review-header">
+                  <span>{{ review.tenant.username }}</span>
+                  <div class="review-stars">
+                    {% for i in range(review.rating) %}
+                      <i class="fas fa-star"></i>
+                    {% endfor %}
+                    {% for i in range(5 - review.rating) %}
+                      <i class="far fa-star"></i>
+                    {% endfor %}
+                  </div>
+                </div>
+                <p class="review-title">{{ review.comment.split('\n')[0] }}</p>
+                <p class="review-content">{{ review.comment.split('\n', 1)[1] if '\n' in review.comment else '' }}</p>
+                <div class="review-date">{{ review.created_at.strftime('%B %d, %Y') }}</div>
+              </div>
+              {% endfor %}
+            {% else %}
+              <p class="no-reviews">No reviews yet. {% if is_authenticated and is_tenant %}Be the first to leave a review!{% endif %}</p>
+            {% endif %}
+          </div>
+        </div>
       </div>
     </main>
 
