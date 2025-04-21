@@ -74,6 +74,77 @@ document.addEventListener('DOMContentLoaded', function() {
             sortReviews(this.value);
         });
     }
+    
+    // Initialize amenities toggles
+    const showMoreBtn = document.getElementById('show-more-amenities');
+    const extraAmenities = document.getElementById('extra-amenities');
+    
+    if (showMoreBtn && extraAmenities) {
+        showMoreBtn.addEventListener('click', function() {
+            if (extraAmenities.style.display === 'none' || !extraAmenities.style.display) {
+                extraAmenities.style.display = 'block';
+                showMoreBtn.textContent = 'Show Less';
+            } else {
+                extraAmenities.style.display = 'none';
+                showMoreBtn.textContent = 'Show More';
+            }
+        });
+    }
+    
+    // Initialize reviews section
+    const reviewForm = document.getElementById('review-form');
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', function(e) {
+            // Form validation would go here
+        });
+    }
+    
+    // Rating stars functionality
+    const ratingInputs = document.querySelectorAll('.rating-input');
+    const ratingLabels = document.querySelectorAll('.rating-label');
+    
+    if (ratingInputs.length && ratingLabels.length) {
+        ratingLabels.forEach(label => {
+            label.addEventListener('mouseover', function() {
+                const ratingValue = parseInt(this.getAttribute('for').split('-')[1]);
+                highlightStars(ratingValue);
+            });
+            
+            label.addEventListener('mouseout', function() {
+                resetStars();
+                const selectedRating = getSelectedRating();
+                if (selectedRating) {
+                    highlightStars(selectedRating);
+                }
+            });
+        });
+    }
+    
+    function highlightStars(rating) {
+        ratingLabels.forEach(label => {
+            const labelRating = parseInt(label.getAttribute('for').split('-')[1]);
+            if (labelRating <= rating) {
+                label.classList.add('active');
+            } else {
+                label.classList.remove('active');
+            }
+        });
+    }
+    
+    function resetStars() {
+        ratingLabels.forEach(label => {
+            label.classList.remove('active');
+        });
+    }
+    
+    function getSelectedRating() {
+        for (let input of ratingInputs) {
+            if (input.checked) {
+                return parseInt(input.value);
+            }
+        }
+        return null;
+    }
 });
 
 // Reviews sorting functionality

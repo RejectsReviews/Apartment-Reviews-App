@@ -5,7 +5,7 @@ services:
   repo: https://github.com/RejectsReviews/Apartment-Reviews-App.git
   plan: free
   branch: main
-  buildCommand: "pip install -r requirements.txt"
+  buildCommand: "pip install -r requirements.txt && python -c 'from App.main import create_app; from App.controllers.initialize import initialize; app=create_app(); with app.app_context(): initialize(force_reset=True)'"
   startCommand: "gunicorn -c gunicorn_config.py 'App.main:create_app()'"
   envVars:
   - key: FLASK_APP

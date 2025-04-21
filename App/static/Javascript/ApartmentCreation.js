@@ -189,177 +189,104 @@ function previewImage(input, previewElementId) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    if (typeof $.fn.select2 === 'function') {
-        $('.amenities-select').select2({
-            placeholder: "Select amenities...",
-            allowClear: true,
-            width: '100%'
-        });
-    }
-
-    const coverImageInput = document.querySelector('input[name="cover_image"]');
-    const coverPreviewArea = document.getElementById('cover-image-preview');
+    // Form validation
+    const form = document.getElementById('apartment-form');
     
-    if (coverImageInput && coverPreviewArea) {
-        coverImageInput.addEventListener('change', function() {
-            showImagePreview(this.files[0], coverPreviewArea);
-        });
-    }
-    
-    const additionalImagesInput = document.querySelector('input[name="additional_images"]');
-    const additionalPreviewArea = document.getElementById('additional-images-preview');
-    
-    if (additionalImagesInput && additionalPreviewArea) {
-        additionalImagesInput.addEventListener('change', function() {
-            additionalPreviewArea.innerHTML = '';
-            
-            additionalPreviewArea.style.display = 'flex';
-            additionalPreviewArea.style.flexWrap = 'wrap';
-            additionalPreviewArea.style.justifyContent = 'flex-start';
-            additionalPreviewArea.style.gap = '10px';
-            
-            const files = Array.from(this.files);
-            
-            files.forEach((file, index) => {
-                const previewContainer = document.createElement('div');
-                previewContainer.className = 'preview-thumbnail';
-                previewContainer.style.opacity = '0';
-                previewContainer.style.transform = 'scale(0.8)';
-                
-                const img = document.createElement('img');
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    img.src = e.target.result;
-                    
-                    setTimeout(() => {
-                        previewContainer.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                        previewContainer.style.opacity = '1';
-                        previewContainer.style.transform = 'scale(1)';
-                    }, 100 * index);
-                }
-                
-                reader.readAsDataURL(file);
-                previewContainer.appendChild(img);
-                additionalPreviewArea.appendChild(previewContainer);
-            });
-        });
-    }
-    
-    function showImagePreview(file, previewElement) {
-        if (!file || !previewElement) return;
-        
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            previewElement.innerHTML = '';
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            img.style.opacity = '0';
-            img.style.transform = 'scale(0.95)';
-            
-            previewElement.appendChild(img);
-            
-            setTimeout(() => {
-                img.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                img.style.opacity = '1';
-                img.style.transform = 'scale(1)';
-            }, 100);
-        }
-        
-        reader.readAsDataURL(file);
-    }
-    
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(checkbox => {
-        const label = checkbox.closest('label');
-        if (label) {
-            label.classList.add('checkbox-label');
-        }
-    });
-
-    // Enhance form validation
-    const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', function(e) {
-            const requiredFields = form.querySelectorAll('[required]');
             let isValid = true;
             
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
+            // Required fields
+            const required = ['title', 'description', 'address', 'city', 'price', 'bedrooms', 'bathrooms'];
+            
+            required.forEach(field => {
+                const input = document.getElementById(field);
+                if (input && !input.value.trim()) {
                     isValid = false;
-                    field.classList.add('invalid');
-                    
-                    const formGroup = field.closest('.form-group');
-                    if (formGroup && !formGroup.querySelector('.validation-message')) {
-                        const message = document.createElement('div');
-                        message.className = 'validation-message';
-                        message.textContent = 'This field is required';
-                        message.style.color = '#e74c3c';
-                        message.style.fontSize = '12px';
-                        message.style.marginTop = '5px';
-                        formGroup.appendChild(message);
-                        
-                        // Animate the form group
-                        formGroup.style.animation = 'shake 0.5s ease';
-                    }
-                } else {
-                    field.classList.remove('invalid');
-                    const formGroup = field.closest('.form-group');
-                    const message = formGroup?.querySelector('.validation-message');
-                    if (message) {
-                        message.remove();
-                    }
+                    highlightError(input);
+                } else if (input) {
+                    removeError(input);
                 }
             });
+            
+            // Price validation
+            const price = document.getElementById('price');
+            if (price && (isNaN(price.value) || parseFloat(price.value) <= 0)) {
+                isValid = false;
+                highlightError(price);
+            }
             
             if (!isValid) {
                 e.preventDefault();
+                document.getElementById('error-message').classList.remove('d-none');
+                window.scrollTo(0, 0);
             }
         });
         
-        form.addEventListener('keyup', function(e) {
-            if (e.target.hasAttribute('required')) {
-                if (e.target.value.trim()) {
-                    e.target.classList.remove('invalid');
-                    const formGroup = e.target.closest('.form-group');
-                    const message = formGroup?.querySelector('.validation-message');
-                    if (message) {
-                        message.remove();
-                    }
-                }
+        // Amenity checkboxes
+        const amenitiesContainer = document.getElementById('amenities-container');
+        if (amenitiesContainer) {
+            const searchBox = document.getElementById('amenity-search');
+            if (searchBox) {
+                searchBox.addEventListener('input', function() {
+                    const query = this.value.toLowerCase();
+                    const amenities = amenitiesContainer.querySelectorAll('.amenity-item');
+                    
+                    amenities.forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        if (text.includes(query)) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
             }
-        });
+        }
     }
     
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
+    // Helper functions
+    function highlightError(element) {
+        element.classList.add('is-invalid');
+    }
+    
+    function removeError(element) {
+        element.classList.remove('is-invalid');
+    }
+    
+    // Initialize map if available
+    function initMap() {
+        const mapElement = document.getElementById('map');
         
-        .drag-over {
-            border-color: #3498db !important;
-            background-color: rgba(52, 152, 219, 0.1) !important;
-            transform: scale(1.02) !important;
+        if (mapElement && window.google && window.google.maps) {
+            // Initialize map with geocoding capabilities
+            const addressInput = document.getElementById('address');
+            const cityInput = document.getElementById('city');
+            
+            if (addressInput && cityInput) {
+                // Combine for geocoding
+                const updateMap = () => {
+                    const address = `${addressInput.value}, ${cityInput.value}`;
+                    // Geocoding would happen here
+                };
+                
+                addressInput.addEventListener('blur', updateMap);
+                cityInput.addEventListener('blur', updateMap);
+            }
+        } else if (mapElement) {
+            // Fallback for no Google Maps
+            mapElement.innerHTML = '<div class="p-3 bg-light text-center">Map loading...</div>';
         }
-        
-        .focused {
-            transform: translateY(-3px);
+    }
+    
+    // Call map init
+    if (document.getElementById('map')) {
+        // This would normally be called by the Google Maps script
+        if (window.google && window.google.maps) {
+            initMap();
+        } else {
+            // Mock for now
+            initMap();
         }
-        
-        .submitting {
-            pointer-events: none;
-            opacity: 0.8;
-        }
-        
-        /* Additional styles for horizontal layout */
-        .preview-thumbnail {
-            margin: 5px;
-            flex: 0 0 auto;
-        }
-    `;
-    document.head.appendChild(style);
+    }
 }); 
