@@ -68,3 +68,29 @@ def get_apartment_amenities(apartment_id):
     if apartment:
         return apartment.amenities
     return []
+
+def save_apartment_for_tenant(apartment_id, tenant):
+    """Save an apartment for a tenant"""
+    try:
+        apartment = Apartment.query.get(apartment_id)
+        if apartment and apartment not in tenant.saved_apartments:
+            tenant.saved_apartments.append(apartment)
+            db.session.commit()
+            return True
+        return False
+    except Exception as e:
+        db.session.rollback()
+        return False
+
+def unsave_apartment_for_tenant(apartment_id, tenant):
+    """Remove an apartment from a tenant's saved list"""
+    try:
+        apartment = Apartment.query.get(apartment_id)
+        if apartment and apartment in tenant.saved_apartments:
+            tenant.saved_apartments.remove(apartment)
+            db.session.commit()
+            return True
+        return False
+    except Exception as e:
+        db.session.rollback()
+        return False

@@ -557,3 +557,37 @@ body {
   margin: 15px 0;
   text-align: center;
 }
+
+.back-button-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.save-button {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.save-button:hover {
+  transform: scale(1.1);
+}
+
+.save-button i {
+  font-size: 18px;
+  color: var(--primary-color);
+}
+
+.save-button.saved i {
+  color: var(--primary-color);
+}

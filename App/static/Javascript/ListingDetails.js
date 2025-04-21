@@ -83,4 +83,41 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error geocoding address:', error);
       mapElement.innerHTML = '<div class="map-error">Error loading map</div>';
     });
-}); 
+
+  // Handle save/unsave functionality
+  const saveButton = document.querySelector('.save-button');
+  if (saveButton) {
+    saveButton.addEventListener('click', async function(e) {
+      e.preventDefault();
+      const apartmentId = this.dataset.apartmentId;
+      const isSaved = this.classList.contains('saved');
+      
+      try {
+        const response = await fetch(`/apartments/${apartmentId}/${isSaved ? 'unsave' : 'save'}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          // Toggle saved state
+          this.classList.toggle('saved');
+          const heartIcon = this.querySelector('i');
+          heartIcon.classList.toggle('fas');
+          heartIcon.classList.toggle('far');
+          
+          // Update tooltip
+          this.title = isSaved ? 'Save apartment' : 'Remove from saved';
+        } else {
+          alert(data.error || 'Error saving apartment');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error saving apartment');
+      }
+    });
+  }
+});

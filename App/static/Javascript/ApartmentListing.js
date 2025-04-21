@@ -1,4 +1,43 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Handle heart button clicks
+    document.querySelectorAll('.save-button').forEach(button => {
+        button.addEventListener('click', async function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const apartmentId = this.dataset.apartmentId;
+            const isSaved = this.classList.contains('saved');
+            
+            try {
+                const response = await fetch(`/apartments/${apartmentId}/${isSaved ? 'unsave' : 'save'}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Toggle saved state
+                    this.classList.toggle('saved');
+                    const heartIcon = this.querySelector('i');
+                    heartIcon.classList.toggle('fas');
+                    heartIcon.classList.toggle('far');
+                    
+                    // Update tooltip
+                    this.title = isSaved ? 'Save apartment' : 'Remove from saved';
+                } else {
+                    alert(data.error || 'Error saving apartment');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while saving the apartment');
+            }
+        });
+    });
+
+    // Location search functionality
     const searchInput = document.querySelector('.search-bar');
     const dropdownContainer = document.createElement('div');
     dropdownContainer.className = 'location-dropdown';

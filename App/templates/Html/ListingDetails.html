@@ -35,7 +35,7 @@
         {% else %}
         <!-- Tenant-specific options -->
         <li><a href="#">My Reviews</a></li>
-        <li><a href="#">Saved Apartments</a></li>
+        <li><a href="{{ url_for('apartment_views.saved_apartments') }}">Saved Apartments</a></li>
         {% endif %}
         <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
       </ul>
@@ -49,6 +49,13 @@
         <a href="{{ url_for('apartment_views.apartments_listing') }}" class="back-button">
           <i class="fas fa-arrow-left"></i> Back to Listings
         </a>
+        {% if is_tenant %}
+        <button class="save-button {% if apartment in current_user.saved_apartments %}saved{% endif %}" 
+                data-apartment-id="{{ apartment.id }}"
+                title="{% if apartment in current_user.saved_apartments %}Remove from saved{% else %}Save apartment{% endif %}">
+          <i class="{% if apartment in current_user.saved_apartments %}fas{% else %}far{% endif %} fa-heart"></i>
+        </button>
+        {% endif %}
       </div>
 
       <!-- Listing Images Card -->
