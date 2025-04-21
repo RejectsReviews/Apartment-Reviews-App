@@ -8,7 +8,7 @@ def create_user(username, password, email, first_name, last_name, user_type):
     db.session.commit()
     return newuser
 
-def signup_tenant(username, password, email, first_name, last_name, phone, address, city, state):
+def signup_tenant(username, password, email, first_name, last_name, phone, address=None, city=None, state=None):
     tenant = Tenant(
         username=username, 
         password=password, 

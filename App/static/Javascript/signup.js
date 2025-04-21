@@ -18,12 +18,8 @@ function toggleTenantFields() {
     const tenantFields = document.getElementById('tenant-fields');
     
     if (userType === 'Tenant') {
-      tenantFields.style.display = 'block';
-      const inputs = tenantFields.querySelectorAll('input');
-      inputs.forEach(input => input.required = true);
+      tenantFields.style.display = 'none';
     } else {
       tenantFields.style.display = 'none';
-      const inputs = tenantFields.querySelectorAll('input');
-      inputs.forEach(input => input.required = false);
     }
 }

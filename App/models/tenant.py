@@ -10,9 +10,9 @@ class Tenant(User):
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     verified = db.Column(db.Boolean, default=False)
     phone = db.Column(db.String(120), nullable=False, unique=True)
-    address = db.Column(db.String(120), nullable=False)
-    city = db.Column(db.String(120), nullable=False)
-    state = db.Column(db.String(120), nullable=False)
+    address = db.Column(db.String(120), nullable=True)
+    city = db.Column(db.String(120), nullable=True)
+    state = db.Column(db.String(120), nullable=True)
     reviews = db.relationship('Review', backref='tenant', lazy=True)
     saved_apartments = db.relationship('Apartment', secondary='saved_apartment',
                                      backref=db.backref('saved_by_tenants', lazy='dynamic'))
@@ -21,7 +21,7 @@ class Tenant(User):
         'polymorphic_identity': 'tenant',
     }
 
-    def __init__(self, username, password, email, first_name, last_name, phone, address, city, state):
+    def __init__(self, username, password, email, first_name, last_name, phone, address=None, city=None, state=None):
         super().__init__(username, password, email, first_name, last_name, 'Tenant')
         self.phone = phone
         self.address = address
