@@ -5,8 +5,8 @@ services:
   repo: https://github.com/RejectsReviews/Apartment-Reviews-App.git
   plan: free
   branch: main
-  buildCommand: "pip install -r requirements.txt && python -m flask db init || true && python -m flask db migrate || true && python -m flask db upgrade"
-  startCommand: "gunicorn -c gunicorn_config.py wsgi:app"
+  buildCommand: "pip install -r requirements.txt"
+  startCommand: "gunicorn -c gunicorn_config.py 'App.main:create_app()'"
   envVars:
   - key: FLASK_APP
     value: App/main.py
@@ -18,29 +18,8 @@ services:
     fromDatabase:
       name: apartment-reviews-db
       property: connectionString
-      append: "?sslmode=disable"
-  - key: POSTGRES_URL
-    fromDatabase:
-      name: apartment-reviews-db
-      property: host
-  - key: POSTGRES_USER
-    fromDatabase:
-      name: apartment-reviews-db
-      property: user
-  - key: POSTGRES_PASSWORD
-    fromDatabase:
-      name: apartment-reviews-db
-      property: password
-  - key: POSTGRES_DB
-    fromDatabase:
-      name: apartment-reviews-db
-      property: database
-  - key: SSL_MODE
-    value: disable
-  - key: USE_SQLITE_FALLBACK
-    value: true
   - key: PGSSLMODE
-    value: disable
+    value: require
 
 envVarGroups:
 - name: flask-postgres-api-settings
@@ -48,7 +27,7 @@ envVarGroups:
   - key: ENV
     value: production
   - key: FLASK_APP
-    value: wsgi.py
+    value: App/main.py
     
 
 databases:

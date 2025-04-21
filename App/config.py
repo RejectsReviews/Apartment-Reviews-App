@@ -10,7 +10,6 @@ def load_config(app, overrides):
     
     # Prioritize DATABASE_URL from environment over config files
     database_url = os.environ.get('DATABASE_URL')
-    use_sqlite_fallback = os.environ.get('USE_SQLITE_FALLBACK', 'false').lower() == 'true'
     
     if database_url:
         try:
@@ -18,25 +17,17 @@ def load_config(app, overrides):
             db_parts = database_url.split('@')
             if len(db_parts) > 1:
                 masked_url = f"...@{db_parts[1]}"
-                logging.info(f"Attempting to connect to database: {masked_url}")
+                logging.info(f"Using database URL: {masked_url}")
             
             # Set the database URI from environment
             app.config['SQLALCHEMY_DATABASE_URI'] = database_url
             
-            # If sqlite fallback is enabled, set a timeout and backup URI
-            if use_sqlite_fallback:
-                logging.info("SQLite fallback enabled")
-                app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-                    'connect_args': {'connect_timeout': 5}
-                }
-                app.config['SQLALCHEMY_BINDS'] = {
-                    'fallback': 'sqlite:///fallback.db'
-                }
+            # Configure connection timeout
+            app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+                'connect_args': {'connect_timeout': 10}
+            }
         except Exception as e:
             logging.error(f"Error configuring database: {str(e)}")
-            if use_sqlite_fallback:
-                logging.warning("Falling back to SQLite database")
-                app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fallback.db'
         
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['TEMPLATES_AUTO_RELOAD'] = True

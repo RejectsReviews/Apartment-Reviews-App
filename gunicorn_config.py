@@ -23,22 +23,20 @@ loglevel = 'info'
 accesslog = '-'  # '-' means log to stdout
 errorlog = '-'  # '-' means log to stderr
 
-# Disable SSL certificate verification if in Render environment
-os.environ['PGSSLMODE'] = 'disable'
+# Enable SSL for PostgreSQL
+os.environ['PGSSLMODE'] = 'require'
 
-# Set sqlite as fallback if postgres connection fails
-os.environ['USE_SQLITE_FALLBACK'] = 'true'
-
-# Construct PostgreSQL connection string from environment variables
-pg_host = os.environ.get('POSTGRES_URL')
-pg_user = os.environ.get('POSTGRES_USER')
-pg_password = os.environ.get('POSTGRES_PASSWORD')
-pg_db = os.environ.get('POSTGRES_DB')
-
-if pg_host and pg_user and pg_password and pg_db:
-    # Try with different SSL parameters to fix SSL connection issues
-    DATABASE_URL = f"postgresql://{pg_user}:{pg_password}@{pg_host}/{pg_db}?sslmode=disable"
-    os.environ['DATABASE_URL'] = DATABASE_URL
-    logging.info(f"Database connection string created with host: {pg_host}")
+# Use the direct DATABASE_URL from environment if available
+if 'DATABASE_URL' in os.environ:
+    logging.info("Using DATABASE_URL from environment")
 else:
-    logging.warning("PostgreSQL connection environment variables not found")
+    # Construct PostgreSQL connection string from environment variables
+    pg_host = os.environ.get('POSTGRES_URL')
+    pg_user = os.environ.get('POSTGRES_USER')
+    pg_password = os.environ.get('POSTGRES_PASSWORD')
+    pg_db = os.environ.get('POSTGRES_DB')
+
+    if pg_host and pg_user and pg_password and pg_db:
+        DATABASE_URL = f"postgresql://{pg_user}:{pg_password}@{pg_host}/{pg_db}?sslmode=require"
+        os.environ['DATABASE_URL'] = DATABASE_URL
+        logging.info(f"Created DATABASE_URL with host: {pg_host}")
