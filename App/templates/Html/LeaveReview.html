@@ -3,20 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>Leave a Review - {{ apartment.title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='Css/navbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='Css/footer.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/LeaveReview.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo-left">
-      <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo"/>
-      <span class="brand">Apartment Reviews</span>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="logo">
+        <a href="{{ url_for('index_views.index_page') }}">
+          <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img">
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a></li>
+        <li><a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a></li>
+      </ul>
     </div>
-    <nav class="nav-links">
-      <a href="{{ url_for('index_views.index_page') }}">Home</a>
-      <a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a>
-      <a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a>
-    </nav>
-  </header>
+  </nav>
 
   <main class="container">
     <div class="card">

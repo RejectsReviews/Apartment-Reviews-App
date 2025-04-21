@@ -4,7 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='Css/navbar.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='Css/footer.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/signup.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='Css/flash.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <script defer src="{{ url_for('static', filename='Javascript/signup.js') }}"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 </head>
@@ -12,27 +16,20 @@
   
   <div class="background-image"></div>
 
-  
-  <header class="pulse">
-    <div class="nav-container">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
       <div class="logo">
-        <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" />
-        <span class="logo-text">Apartment Reviews</span>
+        <a href="{{ url_for('index_views.index_page') }}">
+          <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo-img" />
+        </a>
       </div>
-      <nav>
-        <ul class="nav-links" id="navLinks">
-          <li><a href="{{ url_for('index_views.index_page') }}">Home</a></li>
-          <li><a href="{{ url_for('auth_views.login_page') }}">Login</a></li>
-        </ul>
-        <div class="burger" id="burger">
-          <div class="line"></div>
-          <div class="line"></div>
-          <div class="line"></div>
-        </div>
-      </nav>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="{{ url_for('index_views.index_page') }}">Home</a></li>
+        <li><a href="{{ url_for('auth_views.login_page') }}">Login</a></li>
+      </ul>
     </div>
-  </header>
-
+  </nav>
   
   <div class="signup-container">
     <div class="signup-card">
@@ -78,9 +75,9 @@
     </div>
   </div>
 
-  
-  <footer class="pulse">
-    &copy; 2025 Apartment Reviews System. All Rights Reserved.
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 Apartment Reviews System. All Rights Reserved.</p>
   </footer>
   
 </body>

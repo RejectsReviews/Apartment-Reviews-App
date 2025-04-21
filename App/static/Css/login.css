@@ -42,92 +42,6 @@ html {
   animation: pulse 2.5s infinite;
 }
 
-
-header {
-  background-color: var(--light-coral);
-  padding: 14px 30px;
-  position: relative;
-  z-index: 2;
-}
-
-.nav-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.logo img {
-  height: 45px;
-  width: 45px;
-}
-
-.logo-text {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--white);
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 30px;
-}
-
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  font-size: 1.1rem;
-  font-weight: 600;
-  transition: transform 0.3s ease;
-}
-
-.nav-links a:hover {
-  transform: scale(1.1);
-  text-decoration: underline;
-}
-
-
-.burger {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-.burger .line {
-  width: 25px;
-  height: 3px;
-  background-color: white;
-  margin: 3px 0;
-}
-
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 60px;
-    right: 30px;
-    background: var(--light-coral);
-    border-radius: 8px;
-    padding: 10px;
-  }
-
-  .nav-links.active {
-    display: flex;
-  }
-
-  .burger {
-    display: flex;
-  }
-}
-
-
 .login-container {
   height: calc(100vh - 140px);
   display: flex;
@@ -201,17 +115,4 @@ button:hover {
   color: var(--light-coral);
   text-decoration: none;
   font-weight: 600;
-}
-
-
-footer {
-  background-color: var(--light-coral);
-  color: white;
-  text-align: center;
-  padding: 12px;
-  font-size: 0.9rem;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  z-index: 2;
 }
