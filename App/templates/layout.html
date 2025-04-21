@@ -22,6 +22,9 @@
                   <li><a href="/users">Users Jinja</a></li>
                   {% if is_authenticated %}
                     <li><a href="/identify">Identify</a></li>
+                    {% if current_user and current_user.user_type == 'Tenant' %}
+                    <li><a href="/tenant-reviews">My Reviews</a></li>
+                    {% endif %}
                   {% endif %}
                   <li><a href="/static/users">Users JS</a></li>
               </ul>

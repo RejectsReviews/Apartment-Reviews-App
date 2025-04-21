@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h4 class="center-align">My Reviews</h4>
+    
+    {% if reviews %}
+        <div class="row">
+            {% for review in reviews %}
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <a href="{{ url_for('apartment_views.apartment_details', apartment_id=review.apartment_id) }}">
+                                {{ review.apartment.title }}
+                            </a>
+                        </span>
+                        <p><strong>Rating:</strong> {{ review.rating }}/5</p>
+                        <p>{{ review.comment }}</p>
+                        <p class="grey-text">Posted on {{ review.created_at.strftime('%B %d, %Y') }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="center-align">
+            <p>You haven't written any reviews yet.</p>
+            <a href="{{ url_for('apartment_views.public_apartments_listing') }}" class="btn waves-effect waves-light">
+                Browse Apartments
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %} 

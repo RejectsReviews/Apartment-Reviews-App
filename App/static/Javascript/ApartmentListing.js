@@ -1,4 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Handle mobile menu toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (navToggle) {
+        navToggle.addEventListener('click', function() {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+    }
+    
+    // Add shadow to navbar on scroll
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 10) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
     // Handle heart button clicks
     document.querySelectorAll('.save-button').forEach(button => {
         button.addEventListener('click', async function(e) {
@@ -39,55 +60,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Location search functionality
     const searchInput = document.querySelector('.search-bar');
-    const dropdownContainer = document.createElement('div');
-    dropdownContainer.className = 'location-dropdown';
-    searchInput.parentNode.insertBefore(dropdownContainer, searchInput.nextSibling);
-    
-    let debounceTimer;
-    
-    searchInput.addEventListener('input', function() {
-        clearTimeout(debounceTimer);
-        const query = this.value.trim();
+    if (searchInput) {
+        const dropdownContainer = document.createElement('div');
+        dropdownContainer.className = 'location-dropdown';
+        searchInput.parentNode.insertBefore(dropdownContainer, searchInput.nextSibling);
         
-        if (query.length < 2) {
-            dropdownContainer.style.display = 'none';
-            return;
-        }
+        let debounceTimer;
         
-        // Debounce the API call
-        debounceTimer = setTimeout(() => {
-            fetch(`/api/locations?query=${encodeURIComponent(query)}`)
-                .then(response => response.json())
-                .then(locations => {
-                    if (locations.length > 0) {
-                        const html = locations.map(location => 
-                            `<div class="dropdown-item">${location}</div>`
-                        ).join('');
-                        dropdownContainer.innerHTML = html;
-                        dropdownContainer.style.display = 'block';
-                        
-                        // Add click handlers to dropdown items
-                        dropdownContainer.querySelectorAll('.dropdown-item').forEach(item => {
-                            item.addEventListener('click', function() {
-                                searchInput.value = this.textContent;
-                                dropdownContainer.style.display = 'none';
+        searchInput.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            const query = this.value.trim();
+            
+            if (query.length < 2) {
+                dropdownContainer.style.display = 'none';
+                return;
+            }
+            
+            // Debounce the API call
+            debounceTimer = setTimeout(() => {
+                fetch(`/api/locations?query=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(locations => {
+                        if (locations.length > 0) {
+                            const html = locations.map(location => 
+                                `<div class="dropdown-item">${location}</div>`
+                            ).join('');
+                            dropdownContainer.innerHTML = html;
+                            dropdownContainer.style.display = 'block';
+                            
+                            // Add click handlers to dropdown items
+                            dropdownContainer.querySelectorAll('.dropdown-item').forEach(item => {
+                                item.addEventListener('click', function() {
+                                    searchInput.value = this.textContent;
+                                    dropdownContainer.style.display = 'none';
+                                });
                             });
-                        });
-                    } else {
+                        } else {
+                            dropdownContainer.style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching locations:', error);
                         dropdownContainer.style.display = 'none';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching locations:', error);
-                    dropdownContainer.style.display = 'none';
-                });
-        }, 300); // 300ms debounce delay
-    });
-    
-    // Hide dropdown when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.search-bar') && !e.target.closest('.location-dropdown')) {
-            dropdownContainer.style.display = 'none';
-        }
-    });
+                    });
+            }, 300); // 300ms debounce delay
+        });
+        
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-bar') && !e.target.closest('.location-dropdown')) {
+                dropdownContainer.style.display = 'none';
+            }
+        });
+    }
 });
