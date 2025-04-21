@@ -20,10 +20,12 @@ def create_apartment(landlord_id, title, description, address, city, price, bedr
         db.session.rollback()
         return None
 
-def get_apartment(id):
-    return Apartment.query.get(id)
+def get_apartment(apartment_id):
+    """Get apartment by ID"""
+    return Apartment.query.get(apartment_id)
 
 def get_all_apartments():
+    """Get all apartments"""
     return Apartment.query.all()
 
 def get_all_apartments_json():
@@ -64,4 +66,4 @@ def get_apartment_amenities(apartment_id):
     apartment = Apartment.query.get(apartment_id)
     if apartment:
         return apartment.amenities
-    return [] 
+    return []

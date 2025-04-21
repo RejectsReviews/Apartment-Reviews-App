@@ -1,52 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Write a Review</title>
-  <link rel="stylesheet" href="../../static/Css/LeaveReview.Css"/>
-  <script defer src="../../static/Javascript/LeaveReview.js"></script>
+  <meta charset="UTF-8">
+  <title>Leave a Review - {{ apartment.title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='Css/LeaveReview.css') }}">
 </head>
 <body>
   <header class="navbar">
     <div class="logo-left">
-      <img src="../../static/images/Logo.png" alt="Logo" class="logo"/>
+      <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo" class="logo"/>
       <span class="brand">Apartment Reviews</span>
     </div>
     <nav class="nav-links">
-      <a href="tenantsProfile.html">Profile</a>
-      <a href="ViewListing.html">View Listings</a>
+      <a href="{{ url_for('index_views.index_page') }}">Home</a>
+      <a href="{{ url_for('apartment_views.apartments_listing') }}">View Listings</a>
+      <a href="{{ url_for('auth_views.logout_action') }}">Sign Out</a>
     </nav>
   </header>
 
   <main class="container">
     <div class="card">
+      <div class="back-button-container">
+        <a href="{{ url_for('apartment_views.apartment_details', apartment_id=apartment.id) }}" class="back-button">
+          <i class="fas fa-arrow-left"></i> Back to Listing
+        </a>
+      </div>
+      
       <h1>Write a Review</h1>
-      <p class="subtitle"> [Listing Name Placeholder]</p>
-      <p class="address">[Address Placeholder]</p>
+      <p class="subtitle">{{ apartment.title }}</p>
+      <p class="address">{{ apartment.address }}, {{ apartment.city }}</p>
 
-      <label class="section-title">Upload Photos or Video (Optional)</label>
-      <p class="description">Images or short Video</p>
-      <div class="media-upload">
-        <label for="mediaInput" class="media-box">Click to Add media</label>
-        <input type="file" id="mediaInput" accept="image/*,video/*" multiple style="display: none;">
-      </div> 
+      <form action="{{ url_for('review_views.submit_review', apartment_id=apartment.id) }}" method="POST">
+        {{ form.csrf_token }}
+        <div class="rating-section">
+          <label>Rating</label>
+          <div class="star-rating">
+            {% for i in range(5, 0, -1) %}
+              <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" required>
+              <label for="star{{ i }}" class="star">★</label>
+            {% endfor %}
+          </div>
+        </div>
 
-      <label for="kudos">Give Rating out of 5 Stars</label>
-      <input type="text" id="kudos" placeholder="Put Clickable stars here"/>
+        <div class="form-group">
+          <label for="title">Review Title</label>
+          <input type="text" id="title" name="title" required maxlength="72" 
+                 placeholder="Sum up your experience in one line">
+        </div>
 
-      <label class="section-title">Describe your experience</label>
+        <div class="form-group">
+          <label for="content">Your Review</label>
+          <textarea id="content" name="content" required minlength="10"
+                    placeholder="Tell others about your experience..."></textarea>
+        </div>
 
-      <label for="reviewTitle">Add a Title</label>
-      <input type="text" id="reviewTitle" placeholder="Sum up your review in one line" maxlength="72"/>
-
-      <label for="kudos">Give Kudos (Optional)</label>
-      <input type="text" id="kudos" placeholder="Search staff name or title"/>
-
-      <label for="fullReview">Review</label>
-      <textarea id="fullReview" placeholder="Tell people about your experience: amenities, neighborhood, staff..." minlength="200"></textarea>
-
-      <button class="submit-btn">Submit Review</button>
+        <button type="submit" class="submit-btn">Submit Review</button>
+      </form>
     </div>
   </main>
 
