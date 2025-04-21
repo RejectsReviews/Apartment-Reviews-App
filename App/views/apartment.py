@@ -1,12 +1,16 @@
 from flask import Blueprint, render_template, jsonify, request, flash, redirect, url_for, current_app
 from flask_jwt_extended import jwt_required, current_user
+from App.database import db
 import os
 from werkzeug.utils import secure_filename
 
 from App.controllers import (
     get_all_apartments, 
     add_amenity_to_apartment,
-    get_reviews_by_apartment
+    get_reviews_by_apartment,
+    get_apartment,
+    save_apartment_for_tenant,
+    unsave_apartment_for_tenant
 )
 
 apartment_views = Blueprint('apartment_views', __name__, template_folder='../templates')
@@ -178,3 +182,46 @@ def get_locations():
             locations.add(apartment.address)
     
     return jsonify(list(sorted(locations)))
+
+@apartment_views.route('/apartments/<int:apartment_id>/save', methods=['POST'])
+@jwt_required()
+def save_apartment(apartment_id):
+    if current_user.user_type != 'Tenant':
+        return jsonify({'error': 'Only tenants can save apartments'}), 403
+    
+    apartment = get_apartment(apartment_id)
+    if not apartment:
+        return jsonify({'error': 'Apartment not found'}), 404
+        
+    if apartment not in current_user.saved_apartments:
+        current_user.saved_apartments.append(apartment)
+        db.session.commit()
+    
+    return jsonify({'message': 'Apartment saved successfully'})
+
+@apartment_views.route('/apartments/<int:apartment_id>/unsave', methods=['POST'])
+@jwt_required()
+def unsave_apartment(apartment_id):
+    if current_user.user_type != 'Tenant':
+        return jsonify({'error': 'Only tenants can unsave apartments'}), 403
+    
+    apartment = get_apartment(apartment_id)
+    if not apartment:
+        return jsonify({'error': 'Apartment not found'}), 404
+        
+    if apartment in current_user.saved_apartments:
+        current_user.saved_apartments.remove(apartment)
+        db.session.commit()
+    
+    return jsonify({'message': 'Apartment removed from saved'})
+
+@apartment_views.route('/saved-apartments', methods=['GET'])
+@jwt_required()
+def saved_apartments():
+    if current_user.user_type != 'Tenant':
+        flash('Only tenants can access saved apartments')
+        return redirect(url_for('apartment_views.apartments_listing'))
+        
+    return render_template('Html/ApartmentsListing.html', 
+                         apartments=current_user.saved_apartments,
+                         is_tenant=True)

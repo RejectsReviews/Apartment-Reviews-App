@@ -1,6 +1,11 @@
 from App.database import db
 from App.models.user import User
 
+saved_apartment = db.Table('saved_apartment',
+    db.Column('tenant_id', db.Integer, db.ForeignKey('tenant.id'), primary_key=True),
+    db.Column('apartment_id', db.Integer, db.ForeignKey('apartment.id'), primary_key=True)
+)
+
 class Tenant(User):
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     verified = db.Column(db.Boolean, default=False)
@@ -9,7 +14,9 @@ class Tenant(User):
     city = db.Column(db.String(120), nullable=False)
     state = db.Column(db.String(120), nullable=False)
     reviews = db.relationship('Review', backref='tenant', lazy=True)
-    
+    saved_apartments = db.relationship('Apartment', secondary='saved_apartment',
+                                     backref=db.backref('saved_by_tenants', lazy='dynamic'))
+
     __mapper_args__ = {
         'polymorphic_identity': 'tenant',
     }
