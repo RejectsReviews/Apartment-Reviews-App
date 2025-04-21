@@ -20,6 +20,10 @@ services:
       property: connectionString
   - key: PGSSLMODE
     value: require
+  - key: INIT_DATA
+    value: "true"
+  - key: PYTHONUNBUFFERED
+    value: "true"
 
 envVarGroups:
 - name: flask-postgres-api-settings
