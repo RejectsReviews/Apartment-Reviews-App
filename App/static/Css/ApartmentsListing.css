@@ -1,12 +1,13 @@
+
 :root {
-  --primary-color: #3498db;  
-  --secondary-color: #FFFFFF;
-  --accent-color: #df602f;   
-  --soft-bg: #f5f9fd;
-  --text-dark: #333333;
-  --text-light: #666666;
-  --border-color: #eaeaea;
-  --shadow-color: rgba(0, 0, 0, 0.1);
+  --primary-color: #1B4A63;         /* Primary Accent (Dark Teal/Blue) */
+  --subtle-orange: #FF6600;         /* Subtle Accent (Orange) */
+  --subtle-cyan: #00ADB5;           /* Secondary Accent (Cyan) */
+  --soft-bg: #F8F9FA;               /* Soft Background */
+  --main-bg: #212529;               /* Main Background */
+  --text-main: #1B4A63;             /* Main Text */
+  --text-subtle: #495057;           /* Subtle Text */
+  --border-color: #DEE2E6;          /* Borders */
 }
 
 /* ===================== BODY ===================== */
@@ -15,19 +16,19 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--soft-bg);
-  color: var(--text-dark);
+  color: var(--text-main);
 }
 
 /* ===================== SEARCH ===================== */
 .search-container {
   padding: 20px;
-  background: var(--secondary-color);
+  background: var(--soft-bg);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   width: 90%;
   max-width: 1000px;
   margin: 2rem auto;
-  box-shadow: 0 4px 15px var(--shadow-color);
+  box-shadow: 0 4px 15px rgba(255, 102, 0, 0.15);
 }
 
 .search-group {
@@ -52,8 +53,8 @@ body {
 }
 
 .amenities-filter {
-  background: var(--secondary-color);
-  color: var(--text-dark);
+  background: var(--soft-bg);
+  color: var(--text-main);
 }
 
 .search-button {
@@ -61,12 +62,12 @@ body {
   color: white;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   font-weight: 500;
 }
 
 .search-button:hover {
-  background-color: #2980b9; /* Darker blue */
+  background-color: var(--subtle-orange);
 }
 
 /* ===================== DROPDOWN ===================== */
@@ -81,7 +82,7 @@ body {
   background: white;
   border: 1px solid #ddd;
   border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 173, 181, 0.1);
   z-index: 1000;
 }
 
@@ -92,7 +93,8 @@ body {
 }
 
 .dropdown-item:hover {
-  background-color: var(--soft-bg);
+  background-color: var(--subtle-cyan);
+  color: white;
 }
 
 /* ===================== GRID ===================== */
@@ -106,9 +108,9 @@ body {
 
 /* ===================== CARD ===================== */
 .apartment-card {
-  background: var(--secondary-color);
+  background: var(--soft-bg);
   border-radius: 12px;
-  box-shadow: 0 5px 15px var(--shadow-color);
+  box-shadow: 0 5px 15px rgba(0, 173, 181, 0.12);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
@@ -117,7 +119,7 @@ body {
 
 .apartment-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 25px rgba(255, 102, 0, 0.25);
 }
 
 .apartment-image {
@@ -139,14 +141,14 @@ body {
 .price {
   font-size: 1.2rem;
   font-weight: bold;
-  color: var(--accent-color);
+  color: var(--subtle-cyan);
   margin-bottom: 5px;
 }
 
 .details,
 .location {
   font-size: 0.9rem;
-  color: var(--text-light);
+  color: var(--text-subtle);
   margin-bottom: 5px;
 }
 
@@ -163,7 +165,7 @@ body {
 }
 
 .view-details:hover {
-  background-color: #2980b9; /* Darker blue */
+  background-color: var(--subtle-orange);
 }
 
 /* ===================== AMENITIES ===================== */
@@ -185,11 +187,11 @@ body {
 }
 
 .amenity-tag {
-  background-color: var(--primary-color);
+  background-color: var(--subtle-cyan);
 }
 
 .amenity-more {
-  background-color: var(--accent-color);
+  background-color: var(--subtle-orange);
 }
 
 /* ===================== NO RESULTS ===================== */
@@ -197,10 +199,10 @@ body {
   grid-column: 1 / -1;
   text-align: center;
   padding: 50px;
-  background: var(--secondary-color);
+  background: var(--soft-bg);
   border-radius: 12px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 5px 15px var(--shadow-color);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* ===================== RATINGS ===================== */
@@ -223,7 +225,7 @@ body {
 
 .rating-text {
   font-size: 14px;
-  color: var(--text-light);
+  color: var(--text-subtle);
 }
 
 /* ===================== SAVE/HEART BUTTON ===================== */
@@ -243,17 +245,19 @@ body {
   cursor: pointer;
   transition: transform 0.2s;
   z-index: 2;
-  box-shadow: 0 2px 4px var(--shadow-color);
+  box-shadow: 0 2px 4px rgba(0, 173, 181, 0.3);
 }
 
 .save-button:hover,
 .heart-button:hover {
   transform: scale(1.1);
+  background-color: var(--subtle-orange);
+  color: white;
 }
 
 .save-button i,
 .heart-button i {
-  color: var(--text-light);
+  color: var(--text-subtle);
   font-size: 18px;
 }
 
@@ -267,12 +271,12 @@ body {
     padding: 15px;
     margin-bottom: 80px;
   }
-  
+
   .search-group {
     flex-direction: column;
     gap: 15px;
   }
-  
+
   .search-bar,
   .amenities-filter,
   .search-button {
