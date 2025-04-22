@@ -1,13 +1,17 @@
-/* Adding styles for apartment details page */
+
 :root {
-  --primary-color: #346eb9;  /* Cyan */
-  --secondary-color: #FFFFFF;
-  --accent-color: #000000;   /* Coral accent */
-  --soft-bg: #F5F7FA;
+  --primary-color: #1B4A63;         /* Teal Dark Blue */
+  --subtle-orange: #FF6600;         /* Subtle Hover Accent */
+  --subtle-cyan: #00ADB5;           /* Subtle Cyan Highlights */
+  --soft-bg: #F5F7FA;               /* Soft Background */
+  --main-bg: #212529;               /* Main Background */
   --text-dark: #333333;
   --frosted-glass: rgba(255, 255, 255, 0.2);
   --frosted-border: rgba(255, 255, 255, 0.3);
 }
+
+
+
 
 body {
   margin: 0;
@@ -282,7 +286,7 @@ html {
 }
 
 .back-button:hover {
-  background-color: var(--accent-color);
+  background-color: var(--subtle-orange);
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(250, 137, 141, 0.3);
 }
@@ -597,7 +601,7 @@ body.map-fullscreen-active {
 /* Leave review button */
 .review-btn {
   padding: 10px 20px;
-  background: var(--accent-color);
+  background: var(--primary-color);
   color: white;
   border: none;
   border-radius: 30px;
@@ -608,7 +612,7 @@ body.map-fullscreen-active {
 }
 
 .review-btn:hover {
-  background-color: var(--primary-color);
+  background-color: var(--subtle-orange);
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 207, 255, 0.3);
 }
