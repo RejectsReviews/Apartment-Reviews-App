@@ -8,6 +8,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/footer.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/flash.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script src="{{ url_for('static', filename='Javascript/ApartmentListing.js') }}" defer></script>
 </head>
 <body>
@@ -57,10 +61,9 @@
   <div class="search-container">
     <form id="search-form" action="{{ url_for('apartment_views.apartments_listing') }}" method="GET" class="search-group">
       <input type="text" name="location" class="search-bar" placeholder="Search by location..." value="{{ request.args.get('location', '') }}">
-      <select name="amenity" class="amenities-filter">
-        <option value="">Filter by Amenity</option>
+      <select name="amenities" class="amenities-filter" multiple="multiple" data-placeholder="Filter by Amenities">
         {% for amenity in all_amenities %}
-          <option value="{{ amenity.name }}" {% if request.args.get('amenity') == amenity.name %}selected{% endif %}>{{ amenity.name }}</option>
+          <option value="{{ amenity.name }}" {% if amenity.name in request.args.getlist('amenities') %}selected{% endif %}>{{ amenity.name }}</option>
         {% endfor %}
       </select>
       <button type="submit" class="search-button">Search</button>
@@ -138,6 +141,5 @@
   <footer class="footer">
     <p>&copy; 2025 Apartment Reviews. All rights reserved.</p>
   </footer>
-
 </body>
 </html>

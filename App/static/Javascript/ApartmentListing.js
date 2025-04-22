@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle mobile menu toggle
     const navToggle = document.querySelector('.nav-toggle');
     const navLinks = document.querySelector('.nav-links');
     
@@ -10,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Add shadow to navbar on scroll
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar');
         if (window.scrollY > 10) {
@@ -20,7 +18,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle heart button clicks
+    if (jQuery && jQuery.fn && jQuery.fn.select2) {
+        $('.amenities-filter').select2({
+            placeholder: "Filter by Amenities",
+            allowClear: true,
+            closeOnSelect: false,
+            templateSelection: function(data) {
+                return $('<span>').text(data.text.replace(/^x/, '')).html();
+            }
+        });
+    }
+
     document.querySelectorAll('.save-button').forEach(button => {
         button.addEventListener('click', async function(e) {
             e.preventDefault();
@@ -40,13 +48,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const data = await response.json();
                 
                 if (response.ok) {
-                    // Toggle saved state
                     this.classList.toggle('saved');
                     const heartIcon = this.querySelector('i');
                     heartIcon.classList.toggle('fas');
                     heartIcon.classList.toggle('far');
                     
-                    // Update tooltip
                     this.title = isSaved ? 'Save apartment' : 'Remove from saved';
                 } else {
                     alert(data.error || 'Error saving apartment');
@@ -58,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Location search functionality
     const searchInput = document.querySelector('.search-bar');
     if (searchInput) {
         const dropdownContainer = document.createElement('div');
@@ -76,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Debounce the API call
             debounceTimer = setTimeout(() => {
                 fetch(`/api/locations?query=${encodeURIComponent(query)}`)
                     .then(response => response.json())
@@ -88,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             dropdownContainer.innerHTML = html;
                             dropdownContainer.style.display = 'block';
                             
-                            // Add click handlers to dropdown items
                             dropdownContainer.querySelectorAll('.dropdown-item').forEach(item => {
                                 item.addEventListener('click', function() {
                                     searchInput.value = this.textContent;
@@ -103,10 +106,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.error('Error fetching locations:', error);
                         dropdownContainer.style.display = 'none';
                     });
-            }, 300); // 300ms debounce delay
+            }, 300); 
         });
         
-        // Hide dropdown when clicking outside
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.search-bar') && !e.target.closest('.location-dropdown')) {
                 dropdownContainer.style.display = 'none';
