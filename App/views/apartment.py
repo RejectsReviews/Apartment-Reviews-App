@@ -70,15 +70,15 @@ def register_template_utils(state):
 @apartment_views.route('/public-apartments', methods=['GET'])
 def public_apartments_listing():
     """Public apartments listing that doesn't require authentication"""
-    amenity = request.args.get('amenity')
+    amenities = request.args.getlist('amenities')
     location = request.args.get('location')
     
     apartments = get_all_apartments()
     
-    if amenity:
+    if amenities:
         filtered_apartments = []
         for apartment in apartments:
-            if any(a.name == amenity for a in apartment.amenities):
+            if all(any(a.name == amenity for a in apartment.amenities) for amenity in amenities):
                 filtered_apartments.append(apartment)
         apartments = filtered_apartments
     
@@ -115,15 +115,16 @@ def public_apartments_listing():
 @apartment_views.route('/apartments', methods=['GET'])
 @jwt_required()
 def apartments_listing():
-    amenity = request.args.get('amenity')
+    amenities = request.args.getlist('amenities')
     location = request.args.get('location')
     
     apartments = get_all_apartments()
     
-    if amenity:
+    if amenities:
         filtered_apartments = []
         for apartment in apartments:
-            if any(a.name == amenity for a in apartment.amenities):
+            # If the apartment has ALL of the selected amenities, include it
+            if all(any(a.name == amenity for a in apartment.amenities) for amenity in amenities):
                 filtered_apartments.append(apartment)
         apartments = filtered_apartments
     
