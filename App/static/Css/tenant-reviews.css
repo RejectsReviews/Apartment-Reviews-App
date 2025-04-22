@@ -1,3 +1,16 @@
+
+:root {
+  --primary-color: #1B4A63;        /* Teal Dark Blue */
+  --primary-hover: #FF6600;        /* Orange Hover Accent */
+  --accent-color: #00ADB5;         /* Subtle Cyan Highlights */
+  --danger-color: #dc3545;
+  --soft-bg: #F5F7FA;
+  --text-main: var(--text-main);
+  --text-subtle: var(--text-subtle);
+  --highlight: var(--highlight);
+}
+
+
 body {
   background-color: #f8f9fa;
 }
@@ -17,7 +30,7 @@ body {
 }
 
 .header-content h1 {
-  color: #3498db;
+  color: var(--primary-color);
   margin: 0;
   font-size: 32px;
   font-weight: 600;
@@ -65,24 +78,24 @@ body {
 .apartment-info h3 {
   margin: 0 0 10px;
   font-size: 18px;
-  color: #333;
+  color: var(--text-main);
 }
 
 .apartment-location {
   display: flex;
   align-items: center;
-  color: #666;
+  color: var(--text-subtle);
   font-size: 14px;
   margin-bottom: 10px;
 }
 
 .apartment-location i {
   margin-right: 5px;
-  color: #ff385c;
+  color: var(--primary-hover);
 }
 
 .price-tag {
-  color: #ff385c;
+  color: var(--primary-hover);
   font-weight: bold;
   margin: 5px 0;
 }
@@ -100,7 +113,7 @@ body {
 
 .detail-item i {
   margin-right: 5px;
-  color: #666;
+  color: var(--text-subtle);
 }
 
 .review-content {
@@ -115,7 +128,7 @@ body {
 }
 
 .rating-stars i {
-  color: #ffb400;
+  color: var(--highlight);
   margin-right: 2px;
 }
 
@@ -168,12 +181,12 @@ body {
 }
 
 .primary {
-  background-color: #4a6fa5;
+  background-color: var(--primary-color);
   color: white;
 }
 
 .primary:hover {
-  background-color: #3a5a8f;
+  background-color: var(--primary-hover);
 }
 
 .secondary {
@@ -194,7 +207,7 @@ body {
 }
 
 .danger:hover {
-  background-color: #c82333;
+  background-color: var(--primary-hover);
 }
 
 .action-buttons {
@@ -222,11 +235,11 @@ body {
 
 .no-reviews h3 {
   margin: 0 0 10px;
-  color: #333;
+  color: var(--text-main);
 }
 
 .no-reviews p {
-  color: #666;
+  color: var(--text-subtle);
   margin-bottom: 20px;
   max-width: 500px;
   margin-left: auto;
@@ -236,7 +249,7 @@ body {
 .no-reviews a {
   display: inline-flex;
   align-items: center;
-  background-color: #4a6fa5;
+  background-color: var(--primary-color);
   color: white;
   padding: 10px 20px;
   border-radius: 4px;
@@ -245,7 +258,7 @@ body {
 }
 
 .no-reviews a:hover {
-  background-color: #3a5a8f;
+  background-color: var(--primary-hover);
 }
 
 .no-reviews a i {
@@ -279,7 +292,7 @@ body {
 .modal-title {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #333;
+  color: var(--text-main);
   font-size: 20px;
 }
 
@@ -305,7 +318,7 @@ body {
 
 .cancel-button {
   background-color: #f1f1f1;
-  color: #333;
+  color: var(--text-main);
 }
 
 .cancel-button:hover {
@@ -318,7 +331,7 @@ body {
 }
 
 .confirm-button:hover {
-  background-color: #c82333;
+  background-color: var(--primary-hover);
 }
 
 @media (max-width: 768px) {

@@ -1,5 +1,16 @@
-/* Styles for property management pages */
+:root {
+  --primary-color: #1B4A63;         /* Primary Accent (Dark Teal/Blue) */
+  --subtle-orange: #FF6600;         /* Subtle Accent (Orange) */
+  --subtle-cyan: #00ADB5;           /* Secondary Accent (Cyan) */
+  --soft-bg: #F8F9FA;               /* Soft Background */
+  --main-bg: #212529;               /* Main Background */
+  --text-main: #1B4A63;             /* Main Text */
+  --text-subtle: #495057;           /* Subtle Text */
+  --border-color: #DEE2E6;          /* Borders */
+}
 
+
+/* Styles for property management pages */
 .action-buttons {
   display: flex;
   gap: 10px;
@@ -17,30 +28,47 @@
 }
 
 .edit-btn {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
   color: white;
 }
 
 .delete-btn {
-  background-color: #f44336;
+  background-color: var(--subtle-orange);
   color: white;
 }
 
 .edit-btn:hover, .delete-btn:hover {
   opacity: 0.9;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 102, 0, 0.15);
+}
+
+.edit-btn:hover {
+  background-color: var(--subtle-orange);
+}
+
+.delete-btn:hover {
+  background-color: var(--subtle-cyan);
 }
 
 .no-apartments {
   text-align: center;
   padding: 50px;
   font-size: 18px;
-  color: #555;
+  color: var(--text-subtle);
+}
+
+.no-apartments::before {
+  content: '📦';
+  display: block;
+  font-size: 40px;
+  margin-bottom: 10px;
+  opacity: 0.6;
 }
 
 .page-title {
   text-align: center;
   margin: 20px 0;
   font-size: 28px;
-  color: #333;
-} 
+  color: var(--text-main);
+}

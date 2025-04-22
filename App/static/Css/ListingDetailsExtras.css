@@ -23,12 +23,12 @@
 }
 
 .edit-btn {
-  background-color: #3498db;
+  background-color: #1B4A63;
   color: white;
 }
 
 .delete-btn {
-  background-color: #e74c3c;
+  background-color: #FF6600;
   color: white;
 }
 
@@ -71,7 +71,7 @@
 }
 
 .filter-dropdown:hover, .filter-dropdown:focus {
-  border-color: #3498db;
+  border-color: #1B4A63;
 }
 
 /* Modal styles */
@@ -128,7 +128,7 @@
 }
 
 .confirm-button {
-  background-color: #e74c3c;
+  background-color: #FF6600;
   color: white;
 }
 

@@ -1,3 +1,20 @@
+
+:root {
+  --primary-color: #1B4A63;         /* Teal Dark Blue */
+  --subtle-orange: #FF6600;         /* Subtle Hover Accent */
+  --subtle-cyan: #00ADB5;           /* Subtle Cyan Highlights */
+  --soft-bg: #F5F7FA;               /* Soft Background */
+  --main-bg: #212529;               /* Main Background */
+  --text-dark: #333333;
+  --frosted-glass: rgba(255, 255, 255, 0.2);
+  --frosted-border: rgba(255, 255, 255, 0.3);
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 15px rgba(255, 102, 0, 0.12);
+  --shadow-lg: 0 12px 28px rgba(255, 102, 0, 0.15);
+  --gradient-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+
 /* Variables to match other pages */
 :root {
   --primary-color: #000000;  
