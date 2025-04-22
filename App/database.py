@@ -25,14 +25,20 @@ def init_db(app):
         return
         
     try:
-        # Log database connection string (with password removed for security)
+        # Handle SQLite configuration
         db_uri = app.config.get('SQLALCHEMY_DATABASE_URI', '')
-        if db_uri:
-            # Hide password in logs
-            parts = db_uri.split('@')
-            if len(parts) > 1:
-                sanitized_uri = f"...@{parts[1]}"
-                logging.info(f"Connecting to database: {sanitized_uri}")
+        if 'sqlite' in db_uri:
+            # Ensure SQLite URI is absolute path for Render
+            if '///' in db_uri and not db_uri.startswith('sqlite:////'):
+                # Convert relative path to absolute for production
+                if os.environ.get('ENV') == 'production':
+                    # Use a Render-specific directory
+                    abs_path = os.path.join(os.getcwd(), 'App', 'app.db')
+                    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{abs_path}"
+                    logging.info(f"Using absolute SQLite path: {abs_path}")
+        
+        # Log database connection string
+        logging.info(f"Database URI: {app.config.get('SQLALCHEMY_DATABASE_URI', '')}")
         
         # Initialize the database
         db.init_app(app)

@@ -8,6 +8,7 @@ from werkzeug.datastructures import FileStorage
 
 from App.database import init_db
 from App.config import load_config
+from App.init_db_data import init_sample_data
 
 from App.controllers import (
     setup_jwt,
@@ -28,16 +29,6 @@ def add_views(app):
     for view in views:
         app.register_blueprint(view)
 
-def init_sample_data(app):
-    try:
-        with app.app_context():
-            # The initialize function will check if data already exists
-            logger.info("Initializing sample data...")
-            initialize(force_reset=False)
-            logger.info("Sample data initialization completed")
-    except Exception as e:
-        logger.error(f"Error initializing sample data: {str(e)}")
-
 def create_app(overrides={}):
     app = Flask(__name__, static_url_path='/static')
     load_config(app, overrides)
@@ -56,8 +47,20 @@ def create_app(overrides={}):
         init_db(app)
         logger.info("Database initialized successfully")
         
+        # Initialize sample data in production or when explicitly requested
         if os.environ.get('ENV') == 'production' or os.environ.get('INIT_DATA') == 'true':
-            init_sample_data(app)
+            with app.app_context():
+                # Try both initialization methods for better compatibility
+                try:
+                    # First try the new method
+                    init_sample_data()
+                except Exception as e1:
+                    logger.error(f"Error with new initialization method: {str(e1)}")
+                    try:
+                        # Fall back to the old method if available
+                        initialize(force_reset=False)
+                    except Exception as e2:
+                        logger.error(f"Error with fallback initialization: {str(e2)}")
     except Exception as e:
         logger.error(f"Error initializing database: {str(e)}")
         
