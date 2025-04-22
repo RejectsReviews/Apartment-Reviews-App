@@ -397,3 +397,38 @@ function setupImageFullscreen() {
     });
   }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Map initialization function
+    initializeMap();
+    
+    // Initialize image gallery
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    thumbnails.forEach(thumb => {
+        thumb.addEventListener('click', function() {
+            const mainImg = document.getElementById('main-image');
+            mainImg.src = this.src;
+        });
+    });
+});
+
+// Initialize the map
+function initializeMap() {
+    const mapElement = document.getElementById('map');
+    
+    // If map element exists
+    if (mapElement) {
+        const addressElement = document.getElementById('apartment-address');
+        const address = addressElement ? addressElement.textContent : '';
+        
+        // Display a static map if no interactive map is available
+        if (!window.google || !window.google.maps) {
+            mapElement.innerHTML = `
+                <div class="static-map-fallback">
+                    <p>Map location: ${address}</p>
+                    <p class="small text-muted">Interactive map unavailable</p>
+                </div>
+            `;
+        }
+    }
+}

@@ -23,12 +23,22 @@ loglevel = 'info'
 accesslog = '-'  # '-' means log to stdout
 errorlog = '-'  # '-' means log to stderr
 
-# Enable SSL for PostgreSQL
+# Enable SSL for PostgreSQL - this is crucial for Render's PostgreSQL
 os.environ['PGSSLMODE'] = 'require'
+
+# Set this before any other imports that might use psycopg2
+os.environ['PGSSLROOTCERT'] = 'rds-ca-2019-root.pem'
 
 # Use the direct DATABASE_URL from environment if available
 if 'DATABASE_URL' in os.environ:
-    logging.info("Using DATABASE_URL from environment")
+    # Make sure the URL is compatible with psycopg2's SSL requirements
+    db_url = os.environ['DATABASE_URL']
+    if '?' not in db_url:
+        db_url += '?sslmode=require'
+    elif 'sslmode=' not in db_url:
+        db_url += '&sslmode=require'
+    os.environ['DATABASE_URL'] = db_url
+    logging.info("Using DATABASE_URL from environment with SSL enabled")
 else:
     # Construct PostgreSQL connection string from environment variables
     pg_host = os.environ.get('POSTGRES_URL')

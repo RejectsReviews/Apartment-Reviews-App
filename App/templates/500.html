@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="alert alert-danger text-center">
+        <h2>500 - Server Error</h2>
+        <p>An unexpected error has occurred on the server. Please try again later.</p>
+        {% if error %}
+        <div class="small mt-3 text-start">
+            <p>Error details: {{ error }}</p>
+        </div>
+        {% endif %}
+        <div class="mt-4">
+            <a href="/" class="btn btn-primary">Return to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
