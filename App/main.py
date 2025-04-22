@@ -1,5 +1,6 @@
 import os
 import logging
+import traceback
 from flask import Flask, render_template
 from flask_uploads import DOCUMENTS, IMAGES, TEXT, UploadSet, configure_uploads
 from flask_cors import CORS
@@ -8,8 +9,6 @@ from werkzeug.datastructures import FileStorage
 
 from App.database import init_db
 from App.config import load_config
-from App.init_db_data import init_sample_data
-
 from App.controllers import (
     setup_jwt,
     add_auth_context
@@ -47,22 +46,18 @@ def create_app(overrides={}):
         init_db(app)
         logger.info("Database initialized successfully")
         
-        # Initialize sample data in production or when explicitly requested
         if os.environ.get('ENV') == 'production' or os.environ.get('INIT_DATA') == 'true':
             with app.app_context():
-                # Try both initialization methods for better compatibility
                 try:
-                    # First try the new method
-                    init_sample_data()
-                except Exception as e1:
-                    logger.error(f"Error with new initialization method: {str(e1)}")
-                    try:
-                        # Fall back to the old method if available
-                        initialize(force_reset=False)
-                    except Exception as e2:
-                        logger.error(f"Error with fallback initialization: {str(e2)}")
+                    logger.info("Initializing sample data with initialize.py")
+                    initialize(force_reset=False)
+                    logger.info("Sample data initialized successfully")
+                except Exception as e:
+                    logger.error(f"Error initializing sample data: {str(e)}")
+                    logger.error(traceback.format_exc())
     except Exception as e:
         logger.error(f"Error initializing database: {str(e)}")
+        logger.error(traceback.format_exc())
         
     jwt = setup_jwt(app)
     setup_admin(app)
@@ -72,11 +67,15 @@ def create_app(overrides={}):
     def custom_unauthorized_response(error):
         return render_template('401.html', error=error), 401
     
-    # Add error handling
     @app.errorhandler(500)
     def internal_error(error):
         logger.error(f"Internal server error: {str(error)}")
         return render_template('500.html', error=error), 500
+    
+
+    @app.route('/health')
+    def health_check():
+        return "App is running", 200
     
     app.app_context().push()
     return app
